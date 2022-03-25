@@ -1,5 +1,5 @@
 {
-  "name": "doc-api",
+  "name": "server",
   "version": "1.0.0",
   "description": "",
   "private": true,
@@ -8,8 +8,8 @@
     "declarations": true
   },
   "scripts": {
-    "start": "egg-scripts start --daemon --title=egg-server-doc-api",
-    "stop": "egg-scripts stop --title=egg-server-doc-api",
+    "start": "egg-scripts start --daemon --title=egg-server-server",
+    "stop": "egg-scripts stop --title=egg-server-server",
     "dev": "egg-bin dev",
     "debug": "egg-bin debug",
     "test-local": "egg-bin test",
@@ -53,9 +53,7 @@
     "type": "git",
     "url": ""
   },
-  "eslintIgnore": [
-    "coverage"
-  ],
-  "author": "wangchunlin",
+  "eslintIgnore": ["coverage"],
+  "author": "",
   "license": "MIT"
 }
