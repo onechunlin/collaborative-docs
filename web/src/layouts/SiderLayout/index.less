@@ -1,0 +1,40 @@
+.sider-layout {
+  height: 100vh;
+
+  .sider {
+    flex-basis: 240px;
+    background-color: var(--color-white);
+    border-right: 1px solid rgb(var(--gray-3));
+    padding: 20px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, .15);
+    z-index: 1;
+
+    .logo-name-container {
+      display: flex;
+      align-items: center;
+
+      .name {
+        font-size: 24px;
+        font-weight: bold;
+        margin-left: 16px;
+      }
+    }
+
+    .menu-list {
+      margin-top: 40px;
+
+      .menu-item {
+        font-weight: bold;
+      }
+
+      .arco-menu-inner {
+        padding: 0;
+      }
+    }
+  }
+
+  .content {
+    background-color: rgb(var(--gray-1));
+    padding: 10px 20px;
+  }
+}

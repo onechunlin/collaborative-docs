@@ -1,0 +1,35 @@
+.basic-layout {
+  height: 100vh;
+
+  .header {
+    position: fixed;
+    top: 0;
+    display: flex;
+    width: 100%;
+    align-items: center;
+    height: 60px;
+    background-color: var(--color-white);
+    border-bottom: 1px solid rgb(var(--gray-3));
+    box-shadow: 0 0 12px rgba(0, 0, 0, .15);
+
+    .logo-name-container {
+      cursor: pointer;
+
+      .logo {
+        margin-left: 48px;
+      }
+
+      .name {
+        font-size: 24px;
+        font-weight: bold;
+        margin-left: 16px;
+      }
+    }
+
+  }
+
+  .content {
+    margin-top: 60px;
+    background-color: rgb(var(--gray-1));
+  }
+}
