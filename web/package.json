@@ -20,18 +20,24 @@
     ]
   },
   "dependencies": {
-    "@ant-design/pro-layout": "^6.5.0",
-    "antd": "^4.16.13",
+    "@arco-design/web-react": "^2.32.0",
     "axios": "^0.21.4",
     "react": "17.x",
     "react-dom": "17.x",
-    "umi": "^3.5.18"
+    "umi": "^3.5.18",
+    "validator": "^13.7.0"
   },
   "devDependencies": {
     "@types/react": "^17.0.0",
     "@types/react-dom": "^17.0.0",
+    "@types/validator": "^13.7.2",
+    "@typescript-eslint/eslint-plugin": "^5.19.0",
+    "@typescript-eslint/parser": "^5.19.0",
     "@umijs/preset-react": "1.x",
     "@umijs/test": "^3.5.18",
+    "babel-plugin-import": "^1.13.5",
+    "eslint": "^8.13.0",
+    "eslint-plugin-react": "^7.29.4",
     "lint-staged": "^10.0.7",
     "prettier": "^2.2.0",
     "typescript": "^4.1.2",

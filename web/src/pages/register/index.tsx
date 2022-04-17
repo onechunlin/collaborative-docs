@@ -1,90 +1,127 @@
-import { useState } from 'react';
-import { Input, Form, Button, message } from 'antd';
-import axios from 'axios';
-import { useHistory } from 'react-router-dom';
+import { Message, Form, Input, Button } from '@arco-design/web-react';
+import { useHistory, Link } from 'react-router-dom';
+import validator from 'validator';
+import { register } from '@/services';
 import './index.less';
 
-export default function IndexPage() {
+type TFormData = {
+  username: string;
+  password: string;
+  confirmPassword: string;
+  phoneNumber: number;
+};
+
+const { Item: FormItem, useForm } = Form;
+const { Password } = Input;
+
+export default function Register() {
   const history = useHistory();
-  const [validate, setValidate] = useState<TValidate>();
+  const [form] = useForm();
 
-  function onFinish(values: TUserInfo) {
-    const { password, ...restValues } = values;
-    axios.post('/api/user/register', {
-      ...restValues,
-      password: window.md5(password),
-    })
-      .then(res => res.data)
-      .then((data: TApiResponse) => {
-        const { status, errors } = data;
+  async function handleRegister() {
+    try {
+      await form.validate();
 
-        if (status !== 0) {
-          setValidate(errors?.reduce((prev: TValidate, cur: TErrorObject) => {
-            const { key, msg } = cur;
-            prev[key] = {
-              status: 'error',
-              msg,
-            }
-            return prev;
-          }, {}));
-        } else {
-          message.success('注册成功')
-          history.push('/login')
-        }
-      })
-      .catch(e => {
-        console.error(e);
-        message.error('注册出错')
-      })
-  };
+      const {
+        username,
+        password,
+        phoneNumber,
+      } = form.getFieldsValue() as TFormData;
+      await register({ username, password, phoneNumber });
+      Message.success('注册成功');
+      history.push('/login');
+    } catch (e: any) {
+      console.error(e);
+      Message.error(e?.message || '注册出错');
+    }
+  }
 
   return (
-    <div className="register-container">
-      <h2 className='title'>注册用户</h2>
-      <Form
-        layout='vertical'
-        onFinish={onFinish}
-        autoComplete='off'
-      >
-        <Form.Item
-          label="用户名"
-          name="username"
-          validateStatus={validate?.username?.status}
-          help={validate?.username?.msg}
-          rules={[{ required: true, message: '请输入用户名！' }]}
+    <div className="container">
+      <div className="register-container">
+        <div className="title text-center">注册</div>
+        <Form
+          form={form}
+          layout="vertical"
+          onSubmit={handleRegister}
+          style={{ width: 400 }}
         >
-          <Input />
-        </Form.Item>
+          <FormItem
+            label="用户名"
+            field="username"
+            rules={[
+              {
+                required: true,
+                message: '请输入用户名',
+              },
+            ]}
+          >
+            <Input placeholder="请输入" autoComplete="off" />
+          </FormItem>
 
-        <Form.Item
-          label="密码"
-          name="password"
-          rules={[{ required: true, message: '请输入密码！' }]}
-        >
-          <Input.Password />
-        </Form.Item>
-        <Form.Item
-          label="确认密码"
-          name="confirmPassword"
-          validateStatus={validate?.confirmPassword?.status}
-          help={validate?.confirmPassword?.msg}
-          rules={[{ required: true, message: '请确认密码！' }]}
-        >
-          <Input.Password />
-        </Form.Item>
-        <Form.Item
-          label="手机号"
-          name="phoneNumber"
-          rules={[{ required: true, message: '请输入手机号！' }]}
-        >
-          <Input />
-        </Form.Item>
-        <Form.Item>
-          <Button type="primary" htmlType="submit">
-            确定
-          </Button>
-        </Form.Item>
-      </Form>
+          <FormItem
+            label="密码"
+            field="password"
+            rules={[
+              {
+                required: true,
+                message: '请输入密码',
+              },
+            ]}
+          >
+            <Password placeholder="请输入" autoComplete="off" />
+          </FormItem>
+
+          <FormItem
+            label="确认密码"
+            field="confirmPassword"
+            rules={[
+              {
+                required: true,
+                message: '请输入确认密码',
+              },
+              {
+                validator: (value, errCallback) => {
+                  const password = form.getFieldValue('password');
+                  if (password !== value) {
+                    errCallback('两次密码不相等');
+                  }
+                },
+                validateTrigger: 'onBlur',
+              },
+            ]}
+          >
+            <Password placeholder="请输入" autoComplete="off" />
+          </FormItem>
+
+          <FormItem
+            label="手机号码"
+            field="phoneNumber"
+            rules={[
+              {
+                required: true,
+                message: '请输入手机号码',
+              },
+              {
+                validator: (value, errCallback) => {
+                  if (!validator.isMobilePhone(value || '', 'zh-CN')) {
+                    errCallback('请输入正确的手机号码');
+                  }
+                },
+                validateTrigger: 'onBlur',
+              },
+            ]}
+          >
+            <Input placeholder="请输入" autoComplete="off" />
+          </FormItem>
+
+          <FormItem className="text-right">
+            <Button type="primary" htmlType="submit">
+              提交
+            </Button>
+          </FormItem>
+        </Form>
+      </div>
     </div>
   );
 }
