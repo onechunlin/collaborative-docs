@@ -1,14 +1,23 @@
-import { EggPlugin } from 'egg';
+"use strict";
+
+import { EggPlugin } from "egg";
 
 const plugin: EggPlugin = {
   mongoose: {
     enable: true,
-    package: 'egg-mongoose',
+    package: "egg-mongoose",
   },
-  session: true,
   cors: {
     enable: true,
-    package: 'egg-cors',
+    package: "egg-cors",
+  },
+  io: {
+    enable: true,
+    package: "egg-socket.io",
+  },
+  jwt: {
+    enable: true,
+    package: "egg-jwt",
   },
 };
 

@@ -1,4 +1,6 @@
-import { Button, Avatar, List } from '@arco-design/web-react';
+import { createDoc } from '@/services';
+import { Button, Avatar, List, Message } from '@arco-design/web-react';
+import { useHistory } from 'react-router-dom';
 import './index.less';
 
 const { Item: ListItem } = List;
@@ -15,16 +17,27 @@ const mockData = [
   },
 ];
 export default function Home() {
+  const history = useHistory();
+
+  function handleCreateDoc() {
+    createDoc({}).then(res => {
+      const { _id: docId } = res;
+      history.push(`/edit/${docId}`);
+    }).catch((e: Error) => {
+      Message.error(e.message || '创建失败');
+      console.error(e);
+    });
+  }
   return (
     <div className="home-container">
       <div className="header-container">
         <Avatar size={36}>
-          <img src={window.userInfo.avatar} alt="avatar" />
+          <img src={window.userInfo?.avatar} alt="avatar" />
         </Avatar>
       </div>
       <div className="main-title-and-create">
         <span className="main-title">主页</span>
-        <Button type="primary">新建</Button>
+        <Button type="primary" onClick={handleCreateDoc}>新建</Button>
       </div>
       <div className="banner">
         <div className="left">

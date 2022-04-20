@@ -1,5 +1,5 @@
 import { Message, Form, Input, Button } from '@arco-design/web-react';
-import { useHistory, Link } from 'react-router-dom';
+import { useHistory } from 'react-router-dom';
 import validator from 'validator';
 import { register } from '@/services';
 import './index.less';

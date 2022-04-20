@@ -1,5 +1,5 @@
 import { Message, Form, Input, Button } from '@arco-design/web-react';
-import { useHistory, Link } from 'react-router-dom';
+import { Link } from 'react-router-dom';
 import { login } from '@/services';
 import './index.less';
 
@@ -12,7 +12,6 @@ const { Item: FormItem, useForm } = Form;
 const { Password } = Input;
 
 export default function Login() {
-  const history = useHistory();
   const [form] = useForm();
 
   async function handleLogin() {
@@ -25,7 +24,7 @@ export default function Login() {
         password,
       });
       Message.success('登录成功');
-      history.push('/home');
+      location.href='/home';
     } catch (e: any) {
       console.error(e);
       Message.error(e?.message || '登录出错');

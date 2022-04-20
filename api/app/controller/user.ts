@@ -1,30 +1,35 @@
-import { Controller, Context } from 'egg';
-import { pick } from 'lodash';
-import { TUserInfo } from '../../typings/app/controller/user';
-import { DEFAULT_AVATAR, NO_NEED_LOGIN_PATH } from '../constants';
+import { Controller, Context } from "egg";
+import { pick } from "lodash";
+import { TUserInfo } from "../../typings/app/controller/user";
+import { DEFAULT_AVATAR, NO_NEED_LOGIN_PATH } from "../constants";
 
-export default class HomeController extends Controller {
+export default class UserController extends Controller {
   /**
    * 返回用户信息脚本，若已登录则返回用户信息，否则跳转到登录页面
    */
   async userInfo(ctx: Context) {
-    const { userInfo } = ctx.session;
+    const userInfo = ctx.service.user.getUserInfo();
 
-    ctx.response.set('Content-Type', 'application/javascript');
+    ctx.response.set("Content-Type", "application/javascript");
     if (userInfo) {
       ctx.body = `window.userInfo = ${JSON.stringify(userInfo)}`;
       return;
     }
     const { referer } = ctx.request.header;
-    const noNeedLogin = NO_NEED_LOGIN_PATH.find(path => (referer as string).match(path));
-    ctx.body = noNeedLogin ? '' : 'location.href="/login"';
+    const noNeedLogin = NO_NEED_LOGIN_PATH.find((path) =>
+      (referer as string).match(path)
+    );
+    ctx.body = noNeedLogin ? "" : 'location.href="/login"';
   }
 
   /**
    * 登录接口
    */
   async login(ctx: Context) {
-    const { username, password } = ctx.request.body as Pick<TUserInfo, 'username' | 'password'>;
+    const { username, password } = ctx.request.body as Pick<
+      TUserInfo,
+      "username" | "password"
+    >;
 
     // 查询帐号是否存在
     const existUserName = await ctx.service.user.existUserName(username);
@@ -34,25 +39,30 @@ export default class HomeController extends Controller {
       const res = await ctx.model.User.findOne({ username }).lean();
       const { password: rightPassword } = res;
       if (password === rightPassword) {
-        const userInfo = pick(res, 'username', 'avatar');
-        ctx.session.userInfo = userInfo;
+        const userInfo = pick(res, "username", "avatar");
+        // 生成签名
+        const token = (this.app as any).jwt.sign(
+          userInfo,
+          this.app.config.jwt.secret
+        );
+        ctx.cookies.set("token", token);
         ctx.body = {
           status: 0,
-          msg: '登录成功',
+          msg: "登录成功",
         };
         return;
       }
 
       ctx.body = {
         status: 400,
-        msg: '密码错误',
+        msg: "密码错误",
       };
       return;
     }
 
     ctx.body = {
       status: 400,
-      msg: '帐号不存在',
+      msg: "帐号不存在",
     };
   }
 
@@ -65,7 +75,7 @@ export default class HomeController extends Controller {
       ctx.session = null;
       ctx.body = {
         status: 0,
-        msg: '退出成功',
+        msg: "退出成功",
       };
     }
   }
@@ -82,22 +92,38 @@ export default class HomeController extends Controller {
     if (existUserName) {
       ctx.body = {
         status: 500,
-        msg: '帐号已存在',
+        msg: "帐号已存在",
       };
       return;
     }
 
     try {
-      await ctx.model.User.create({ username, password, phoneNumber, avatar: DEFAULT_AVATAR });
+      await ctx.model.User.create({
+        username,
+        password,
+        phoneNumber,
+        avatar: DEFAULT_AVATAR,
+      });
       ctx.body = {
         status: 0,
-        msg: '注册成功',
+        msg: "注册成功",
       };
     } catch (error) {
       ctx.body = {
         status: 500,
-        msg: '注册失败',
+        msg: "注册失败",
       };
     }
+  }
+
+  async getToken(ctx: Context) {
+    const token = ctx.cookies.get("token") || ctx.headers.token;
+    ctx.body = {
+      status: 0,
+      msg: "ok",
+      data: {
+        token,
+      },
+    };
   }
 }
