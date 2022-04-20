@@ -8,8 +8,8 @@ export default defineConfig({
   proxy: {
     '/api/*': {
       target: 'http://localhost:7001',
-      changeOrigin: true
-    }
+      changeOrigin: true,
+    },
   },
   extraBabelPlugins: [
     [
@@ -20,6 +20,6 @@ export default defineConfig({
         camel2DashComponentName: false,
         style: true, // 样式按需加载
       },
-    ]
-  ]
+    ],
+  ],
 });

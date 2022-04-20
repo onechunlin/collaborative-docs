@@ -24,6 +24,7 @@
     "axios": "^0.21.4",
     "react": "17.x",
     "react-dom": "17.x",
+    "socket.io-client": "^2.0.1",
     "umi": "^3.5.18",
     "validator": "^13.7.0"
   },

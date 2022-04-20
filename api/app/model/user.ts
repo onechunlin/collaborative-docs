@@ -20,10 +20,15 @@ module.exports = app => {
         avatar: {
             type: String
         },
+        // 将更新时间和创建时间存为 unix 时间戳
+        createdAt: Number,
+        updatedAt: Number,
     },
-        {
-            timestamps: true
-        });
+    {
+        timestamps: {
+            currentTime: () => Math.floor(Date.now() / 1000)
+        }
+    });
 
     return mongoose.model('User', UserSchema);
 }
