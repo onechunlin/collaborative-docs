@@ -11,8 +11,10 @@ export default (app: Application) => {
 
   router.post("/doc/create", controller.doc.create);
   router.post("/doc/delete", controller.doc.delete);
+  router.post("/doc/search", controller.doc.search);
 
   // websocket 路由
   io.of("/io/doc").route("detail", io.controller.doc.detail);
+  io.of("/io/doc").route("update", io.controller.doc.update);
   io.of("/io/doc").route("disconnect", io.controller.doc.disconnect);
 };

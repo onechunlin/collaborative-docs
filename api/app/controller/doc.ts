@@ -46,4 +46,23 @@ export default class DocController extends Controller {
       };
     }
   }
+
+  /**
+   * 查找接口
+   */
+  async search(ctx: Context) {
+    try {
+      const res = await ctx.model.Doc.find({}).lean();
+      ctx.body = {
+        status: 0,
+        msg: "ok",
+        data: res,
+      };
+    } catch (error) {
+      ctx.body = {
+        status: 500,
+        msg: "查询失败",
+      };
+    }
+  }
 }

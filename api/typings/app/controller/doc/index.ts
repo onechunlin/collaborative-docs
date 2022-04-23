@@ -28,6 +28,8 @@ export type TNode = {
  * 文档结构
  */
 export type TDoc = {
+  /** 文档 id */
+  _id: string;
   /** 文档名称 */
   title: string;
   /** 文档创建人 */

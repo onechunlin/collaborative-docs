@@ -45,6 +45,9 @@ export function getToken(): Promise<{ token: string }> {
   });
 }
 
+/**
+ * 创建文档
+ */
 export function createDoc(params: Partial<TDoc>): Promise<TDoc> {
   return request({
     method: 'post',
@@ -53,5 +56,15 @@ export function createDoc(params: Partial<TDoc>): Promise<TDoc> {
       ...params,
       creator: window.userInfo.username,
     },
+  });
+}
+
+/**
+ * 查找文档
+ */
+export function searchDoc(): Promise<TDoc[]> {
+  return request({
+    method: 'post',
+    url: '/api/doc/search',
   });
 }
