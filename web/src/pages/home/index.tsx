@@ -1,33 +1,42 @@
-import { createDoc } from '@/services';
-import { Button, Avatar, List, Message } from '@arco-design/web-react';
+import { createDoc, searchDoc } from '@/services';
+import { TDoc } from '@/typings/doc';
+import { Button, Avatar, List, Message, Spin } from '@arco-design/web-react';
+import { useEffect, useState } from 'react';
 import { useHistory } from 'react-router-dom';
+import dayjs from 'dayjs';
 import './index.less';
 
 const { Item: ListItem } = List;
-const mockData = [
-  {
-    title: '这是文档标题1',
-    creator: 'wangchunlin',
-    updateAt: '2022-04-17T08:21:45.347+00:00',
-  },
-  {
-    title: '这是文档标题2',
-    creator: 'wangchunlin',
-    updateAt: '2022-04-17T08:21:45.347+00:00',
-  },
-];
+
 export default function Home() {
   const history = useHistory();
+  const [docs, setDocs] = useState<TDoc[]>();
+  const [loading, setLoading] = useState(true);
+
+  useEffect(() => {
+    searchDoc()
+      .then((res) => setDocs(res))
+      .finally(() => {
+        setLoading(false);
+      });
+  }, []);
 
   function handleCreateDoc() {
-    createDoc({}).then(res => {
-      const { _id: docId } = res;
-      history.push(`/edit/${docId}`);
-    }).catch((e: Error) => {
-      Message.error(e.message || '创建失败');
-      console.error(e);
-    });
+    createDoc({})
+      .then((res) => {
+        const { _id: docId } = res;
+        history.push(`/edit/${docId}`);
+      })
+      .catch((e: Error) => {
+        Message.error(e.message || '创建失败');
+        console.error(e);
+      });
   }
+
+  function handleEditDoc(docId: string) {
+    window.open(`/edit/${docId}`);
+  }
+
   return (
     <div className="home-container">
       <div className="header-container">
@@ -37,7 +46,9 @@ export default function Home() {
       </div>
       <div className="main-title-and-create">
         <span className="main-title">主页</span>
-        <Button type="primary" onClick={handleCreateDoc}>新建</Button>
+        <Button type="primary" onClick={handleCreateDoc}>
+          新建
+        </Button>
       </div>
       <div className="banner">
         <div className="left">
@@ -61,25 +72,33 @@ export default function Home() {
           <span>文档所有人</span>
           <span>更新时间</span>
         </div>
-        <List
-          dataSource={mockData}
-          wrapperClassName="list"
-          render={(item) => (
-            <ListItem className="list-item">
-              <div className="row">
-                <span>
-                  <img
-                    src={require('@/assets/doc.svg')}
-                    style={{ marginRight: 12 }}
-                  />
-                  {item.title}
-                </span>
-                <span>{item.creator}</span>
-                <span>{item.updateAt}</span>
-              </div>
-            </ListItem>
-          )}
-        ></List>
+        <Spin loading={loading} block>
+          <List
+            dataSource={docs}
+            wrapperClassName="list"
+            render={(item, index) => (
+              <ListItem
+                key={index}
+                className="list-item"
+                onClick={() => handleEditDoc(item._id)}
+              >
+                <div className="row">
+                  <span>
+                    <img
+                      src={require('@/assets/doc.svg')}
+                      style={{ marginRight: 12 }}
+                    />
+                    {item.title}
+                  </span>
+                  <span>{item.creator}</span>
+                  <span>
+                    {dayjs(item.updatedAt * 1000).format('YYYY-MM-DD HH:mm:ss')}
+                  </span>
+                </div>
+              </ListItem>
+            )}
+          ></List>
+        </Spin>
       </div>
     </div>
   );

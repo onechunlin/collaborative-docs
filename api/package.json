@@ -29,6 +29,7 @@
     "egg-scripts": "^2.6.0",
     "egg-session": "^3.3.0",
     "egg-socket.io": "^4.1.6",
+    "immer": "^9.0.12",
     "lodash": "^4.17.21"
   },
   "devDependencies": {

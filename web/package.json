@@ -22,6 +22,9 @@
   "dependencies": {
     "@arco-design/web-react": "^2.32.0",
     "axios": "^0.21.4",
+    "dayjs": "^1.11.1",
+    "immer": "^9.0.12",
+    "lodash": "^4.17.21",
     "react": "17.x",
     "react-dom": "17.x",
     "socket.io-client": "^2.0.1",
@@ -29,6 +32,7 @@
     "validator": "^13.7.0"
   },
   "devDependencies": {
+    "@types/lodash": "^4.14.182",
     "@types/react": "^17.0.0",
     "@types/react-dom": "^17.0.0",
     "@types/validator": "^13.7.2",
