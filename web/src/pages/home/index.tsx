@@ -1,17 +1,33 @@
 import { createDoc, searchDoc } from '@/services';
 import { TDoc } from '@/typings/doc';
-import { Button, Avatar, List, Message, Spin } from '@arco-design/web-react';
+import {
+  Button,
+  Avatar,
+  List,
+  Message,
+  Spin,
+  Dropdown,
+  Menu,
+  Modal,
+  Form,
+  Input,
+} from '@arco-design/web-react';
 import { useEffect, useState } from 'react';
 import { useHistory } from 'react-router-dom';
 import dayjs from 'dayjs';
 import './index.less';
+import { createMdDoc } from '@/services/mdDoc';
+import { TMdDoc } from '@/typings/mdDoc';
 
 const { Item: ListItem } = List;
+const { Item: FormItem, useForm } = Form;
 
 export default function Home() {
   const history = useHistory();
   const [docs, setDocs] = useState<TDoc[]>();
   const [loading, setLoading] = useState(true);
+  const [visible, setVisible] = useState(false);
+  const [form] = useForm();
 
   useEffect(() => {
     searchDoc()
@@ -33,6 +49,21 @@ export default function Home() {
       });
   }
 
+  function openModal() {
+    setVisible(true);
+  }
+
+  async function handleCreateMdDoc() {
+    try {
+      await form.validate();
+      const title = form.getFieldValue('title');
+      const res = (await createMdDoc({ title })) as TMdDoc;
+      history.push(`/md_edit/${res._id}`);
+    } catch (error) {
+      Message.error('创建失败');
+    }
+  }
+
   function handleEditDoc(docId: string) {
     window.open(`/edit/${docId}`);
   }
@@ -46,9 +77,23 @@ export default function Home() {
       </div>
       <div className="main-title-and-create">
         <span className="main-title">主页</span>
-        <Button type="primary" onClick={handleCreateDoc}>
-          新建
-        </Button>
+
+        <Dropdown
+          position="br"
+          trigger="click"
+          droplist={
+            <Menu>
+              <Menu.Item key="md" onClick={openModal}>
+                MarkDown
+              </Menu.Item>
+              <Menu.Item key="doc" onClick={handleCreateDoc} disabled>
+                文档 2.0
+              </Menu.Item>
+            </Menu>
+          }
+        >
+          <Button type="primary">新建</Button>
+        </Dropdown>
       </div>
       <div className="banner">
         <div className="left">
@@ -100,6 +145,23 @@ export default function Home() {
           ></List>
         </Spin>
       </div>
+      <Modal
+        title="文档信息"
+        visible={visible}
+        onCancel={() => setVisible(false)}
+        onOk={handleCreateMdDoc}
+        unmountOnExit
+      >
+        <Form form={form}>
+          <FormItem
+            label="文档标题"
+            field="title"
+            rules={[{ required: true, message: '请输入文档标题' }]}
+          >
+            <Input placeholder="请输入" />
+          </FormItem>
+        </Form>
+      </Modal>
     </div>
   );
 }
