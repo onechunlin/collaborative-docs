@@ -15,3 +15,8 @@ export type TMdDoc = {
   /** 更新时间 unix 时间戳 */
   updatedAt: number;
 };
+
+export enum EDocType {
+  MarkDown = 'md',
+  Docs = 'docs'
+}

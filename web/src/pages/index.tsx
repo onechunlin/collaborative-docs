@@ -1,10 +1,16 @@
 import { Result, Button } from '@arco-design/web-react';
 import { IconFaceSmileFill } from '@arco-design/web-react/icon';
+import { useEffect } from 'react';
 import { useHistory } from 'react-router-dom';
 
 export default function Login() {
   const history = useHistory();
 
+  useEffect(() => {
+    if (window.userInfo) {
+      history.push('/home');
+    }
+  }, []);
   return (
     <Result
       style={{
