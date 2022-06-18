@@ -7,6 +7,8 @@ function Layout(props: React.PropsWithChildren<any>) {
   const location = useLocation();
   if (location.pathname.startsWith('/home')) {
     return <SiderLayout>{props.children}</SiderLayout>;
+  } else if (location.pathname.startsWith('/md_edit')) {
+    return props.children;
   }
 
   return <BasicLayout>{props.children}</BasicLayout>;

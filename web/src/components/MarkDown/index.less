@@ -1,0 +1,46 @@
+.custom-markdown {
+
+  table {
+    border: 1px solid var(--color-neutral-3);
+    border-radius: 4px;
+    display: inline-block;
+    overflow: hidden;
+
+    thead {
+      background-color: var(--color-neutral-2);
+    }
+
+    tbody {
+      tr {
+        border-top: 1px solid var(--color-neutral-3);
+      }
+    }
+
+    td,
+    th {
+      padding: 9px 16px;
+    }
+  }
+
+  // ` {语法} ` 格式
+  &:not(pre) code {
+
+    &:not([class*="language"]) {
+      border: 1px solid var(--color-neutral-3);
+      padding: 0 2px;
+      border-radius: 4px;
+      margin: 0 4px;
+      background-color: var(--color-neutral-1);
+      display: inline-block;
+    }
+  }
+
+  // ``` {语法} ``` 格式
+  pre > code {
+    &:not([class*="language"]) {
+      margin: 0;
+      display: block;
+      padding: 12px;
+    }
+  }
+}

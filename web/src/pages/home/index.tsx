@@ -10,32 +10,39 @@ import {
   Menu,
   Modal,
   Form,
+  Radio,
   Input,
 } from '@arco-design/web-react';
 import { useEffect, useState } from 'react';
 import { useHistory } from 'react-router-dom';
 import dayjs from 'dayjs';
 import './index.less';
-import { createMdDoc } from '@/services/mdDoc';
-import { TMdDoc } from '@/typings/mdDoc';
+import { createMdDoc, searchMdDoc } from '@/services/mdDoc';
+import { EDocType, TMdDoc } from '@/typings/mdDoc';
 
 const { Item: ListItem } = List;
+const { Group: RadioGroup } = Radio;
 const { Item: FormItem, useForm } = Form;
 
 export default function Home() {
   const history = useHistory();
-  const [docs, setDocs] = useState<TDoc[]>();
+  const [docs, setDocs] = useState<(TDoc | TMdDoc)[]>();
   const [loading, setLoading] = useState(true);
   const [visible, setVisible] = useState(false);
+  const [docType, setDocType] = useState<EDocType>(EDocType.MarkDown);
+
   const [form] = useForm();
 
   useEffect(() => {
-    searchDoc()
+    const searchService =
+      docType === EDocType.MarkDown ? searchMdDoc : searchDoc;
+
+    searchService()
       .then((res) => setDocs(res))
       .finally(() => {
         setLoading(false);
       });
-  }, []);
+  }, [docType]);
 
   function handleCreateDoc() {
     createDoc({})
@@ -65,7 +72,9 @@ export default function Home() {
   }
 
   function handleEditDoc(docId: string) {
-    window.open(`/edit/${docId}`);
+    window.open(
+      docType === EDocType.Docs ? `/edit/${docId}` : `/md_edit/${docId}`,
+    );
   }
 
   return (
@@ -111,7 +120,23 @@ export default function Home() {
         </div>
       </div>
       <div className="recent-list">
-        <span className="title">最近访问</span>
+        <div className="recent-header">
+          <span className="title">最近访问</span>
+          <RadioGroup
+            value={docType}
+            onChange={setDocType}
+            options={[
+              {
+                label: 'Markdown',
+                value: EDocType.MarkDown,
+              },
+              {
+                label: '文档 2.0',
+                value: EDocType.Docs,
+              },
+            ]}
+          ></RadioGroup>
+        </div>
         <div className="list-title row">
           <span>文档名称</span>
           <span>文档所有人</span>
