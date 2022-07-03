@@ -1,7 +1,7 @@
 import { Controller, Context } from "egg";
 import { pick } from "lodash";
 import { TUserInfo } from "../../typings/app/controller/user";
-import { DEFAULT_AVATAR, NO_NEED_LOGIN_PATH } from "../constants";
+import { DEFAULT_AVATAR } from "../constants";
 
 export default class UserController extends Controller {
   /**
@@ -15,11 +15,7 @@ export default class UserController extends Controller {
       ctx.body = `window.userInfo = ${JSON.stringify(userInfo)}`;
       return;
     }
-    const { referer } = ctx.request.header;
-    const noNeedLogin = NO_NEED_LOGIN_PATH.find((path) =>
-      (referer as string).match(path)
-    );
-    ctx.body = noNeedLogin ? "" : 'location.href="/login"';
+    ctx.body = "";
   }
 
   /**

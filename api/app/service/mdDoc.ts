@@ -14,19 +14,19 @@ export default class MdDoc extends Service {
    * 更新文档
    */
   public async update(id, params: Partial<TMdDoc>): Promise<TMdDoc> {
-    const res = await this.ctx.model.MarkdownDoc.updateOne(
+    const res: unknown = await this.ctx.model.MarkdownDoc.updateOne(
       { _id: id },
       params,
       { new: true }
     );
-    return res;
+    return res as TMdDoc;
   }
 
   /**
    * 查找文档
    */
   public async search(filter: Partial<TMdDoc>): Promise<TMdDoc[]> {
-    const res = await this.ctx.model.MarkdownDoc.find(filter).lean();
+    const res = await this.ctx.model.MarkdownDoc.find(filter).lean<TMdDoc[]>();
     return res;
   }
 

@@ -1,5 +1,6 @@
 import axios, { AxiosRequestConfig } from 'axios';
 import { TApiResponse } from '@/typings';
+import { ORIGIN } from '@/constants';
 
 /**
  * 封装获取 cookie 的方法
@@ -20,13 +21,15 @@ export function getCookie(name: string): string {
  * 统一的请求函数
  */
 export function request(config: AxiosRequestConfig): Promise<any> {
-  const { headers, ...rest } = config;
+  const { headers, url, ...rest } = config;
   return axios({
     ...rest,
+    url: `${ORIGIN}${url}`,
     headers: {
       ...headers,
       'x-csrf-token': getCookie('csrfToken'),
     },
+    withCredentials: true
   })
     .then((res) => res.data)
     .then((res) => {

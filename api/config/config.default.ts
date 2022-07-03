@@ -1,4 +1,5 @@
 import { EggAppConfig, EggAppInfo, PowerPartial } from "egg";
+import { FE_ORIGIN } from "../app/constants";
 
 export default (appInfo: EggAppInfo) => {
   const config = {} as PowerPartial<EggAppConfig>;
@@ -20,11 +21,11 @@ export default (appInfo: EggAppInfo) => {
       },
     },
     jwt: {
-      secret: "123456",
+      secret: "jhduawsda23jd43",
     },
     cors: {
       credentials: true,
-      origin: "http://localhost:8000",
+      origin: FE_ORIGIN,
     },
     security: {
       csrf: {
@@ -46,7 +47,7 @@ export default (appInfo: EggAppInfo) => {
         pingInterval: 1000,
         cors: {
           credentials: true,
-          origin: "http://localhost:8000",
+          origin: FE_ORIGIN,
         },
       },
       namespace: {
