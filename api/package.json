@@ -32,8 +32,10 @@
     "egg-socket.io": "^4.1.6",
     "immer": "^9.0.12",
     "lodash": "^4.17.21",
+    "qs": "^6.11.0",
     "rich-text": "^4.1.0",
     "sharedb": "^3.0.0",
+    "sharedb-mongo": "^2.0.0",
     "ws": "^8.8.1"
   },
   "devDependencies": {

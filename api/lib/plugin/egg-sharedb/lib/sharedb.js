@@ -4,37 +4,62 @@ const ShareDB = require('sharedb');
 const WebSocket = require('ws');
 const richText = require('rich-text');
 const WebSocketJSONStream = require('@teamwork/websocket-json-stream');
+const sharedbMongo = require('sharedb-mongo');
+const parseUrl = require('url').parse;
+const qs = require('qs');
 
 
 module.exports = app => {
   // 注册富文本类型
   ShareDB.types.register(richText.type);
   // 创建 sharedb 实例
-  const backend = new ShareDB(app.config.sharedb);
-  // todo 这是干啥的
-  const connection = backend.connect();
-  // todo 
-  const doc = connection.get('examples', 'richtext');
-  // todo
-  doc.fetch(function(err) {
-    if (err) throw err;
-    if (doc.type === null) {
-      doc.create([{insert: 'Hi!'}], 'rich-text', () => {
-        startServer(backend)
-      });
-      return;
-    }
-    startServer(backend);
+  const { url: dbUrl, options: dbOptions } = app.config.sharedb.options.db;
+  const db = sharedbMongo(dbUrl, dbOptions);
+  const backend = new ShareDB({
+    ...app.config.sharedb.options,
+    db,
   });
+  startServer(backend, app)
 };
 
-function startServer(backend) {
-  const wss = new WebSocket.Server({ port: 8080 }, () => {
-    console.log('Listening on http://localhost:8080');
+function startServer(backend, app) {
+  const { options, port } = app.config.sharedb;
+  const { collection: dbCollection } = options.db;
+
+  // todo 这是干啥的
+  const connection = backend.connect();
+
+  // 创建 websocket 服务器
+  const wss = new WebSocket.Server({ port }, () => {
+    console.log(`websocket server listening on http://localhost:${port}`);
   });
 
-  wss.on('connection', function(ws) {
+  // 监听 connection 事件
+  wss.on('connection', function(ws, request) {
+    const query = parseUrl(request.url).query;
+    const docId = qs.parse(query).docId;
+    // 获取对应集合 ID 的文档
+    const doc = connection.get(dbCollection, docId);
+    // 获取 doc 的数据
+    doc.fetch(function(err) {
+      if (err) throw err;
+      // 如果该记录不存在的话
+      // todo 之后
+      if (doc.type === null) {
+        doc.create([{insert: ''}], richText.type.name);
+        return;
+      }
+    });
+
+    // 将 websocket 的包打成 JSON 流
     const stream = new WebSocketJSONStream(ws);
+
+    stream.on('error', error => {
+      console.log('server stream error, the message is ', error.message);
+    });
+    stream.on('end', () => console.log('server stream end'));
+    stream.on('close', () => console.log('server stream close'));
+
     backend.listen(stream);
   });
 }

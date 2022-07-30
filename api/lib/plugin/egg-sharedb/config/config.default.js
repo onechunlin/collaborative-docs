@@ -1,8 +1,14 @@
 'use strict';
 
-exports.mysql = {
+exports.sharedb = {
   port: 8080,
   options: {
-    presence: true
-  }
+    presence: true,
+    db: {
+      url: '',
+      options: {},
+      collection: 'example'
+    }
+  },
+  
 };

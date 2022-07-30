@@ -1,0 +1,42 @@
+#coll-doc-container {
+  height: 100%;
+  overflow: hidden;
+  width: 1000px;
+  margin: 0 auto;
+
+  #toolbar {
+    width: 1000px;
+    position: fixed;
+    height: 40px;
+    top: 60px;
+    background-color: rgb(var(--gray-1));
+    z-index: 10;
+    border: none;
+    border-bottom: 1px solid rgb(var(--gray-3));
+
+    .ql-size {
+      width: 100px;
+    }
+
+  }
+
+  #editor {
+    border: none;
+    margin-top: 40px;
+    overflow: visible;
+
+    .ql-cursor {
+
+      .ql-cursor-flag {
+        z-index: 100;
+      }
+    }
+  }
+
+}
+
+.cmd-icon {
+  width: 12px;
+  height: 12px;
+  margin-right: 4px;
+}
