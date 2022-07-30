@@ -57,6 +57,17 @@ export default (appInfo: EggAppInfo) => {
         },
       },
     },
+    sharedb: {
+      port: 8080,
+      options: {
+        presence: true,
+        db: {
+          url: 'mongodb+srv://admin:admin@cluster0.er3fd.mongodb.net/BasicDataBase?retryWrites=true&w=majority',
+          options: {},
+          collection: 'collDoc'
+        }
+      },
+    }
   };
 
   // the return config will combines to EggAppConfig

@@ -1,6 +1,7 @@
 "use strict";
 
 import { EggPlugin } from "egg";
+const path = require('path');
 
 const plugin: EggPlugin = {
   mongoose: {
@@ -19,6 +20,10 @@ const plugin: EggPlugin = {
     enable: true,
     package: "egg-jwt",
   },
+  sharedb: {
+    enable: true,
+    path: path.join(__dirname, '../lib/plugin/egg-sharedb'),
+  }
 };
 
 export default plugin;
