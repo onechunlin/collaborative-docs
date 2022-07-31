@@ -12,6 +12,9 @@ import Delta from 'quill-delta';
 import Toolbar from './components/Toobar';
 import './index.less';
 import { COLL_DOC_COLLECTION } from '@/constants';
+import { Input, Message, Result, Spin } from '@arco-design/web-react';
+import { collDocInfoDetail, updateTitle } from '@/services/collDoc';
+import debounce from '@/utils/debounce';
 
 sharedb.types.register(richText.type);
 Quill.register('modules/cursors', QuillCursors);
@@ -21,19 +24,46 @@ const presenceId = new ObjectID().toString();
 
 export default function CollaborativeDoc() {
   const { docId } = useParams<{ docId: string }>();
+  const [title, setTitle] = useState<string>();
+  const [titleReady, setTitleReady] = useState<boolean>(false);
+  const [doc, setDoc] = useState<Doc>();
 
   useEffect(() => {
+    // 拉取文档标题
+    collDocInfoDetail(docId)
+      .then((res) => {
+        setTitle(res.title);
+      })
+      .catch((e) => {
+        Message.error('查询文档详情失败');
+        console.error(e);
+      })
+      .finally(() => {
+        setTitleReady(true);
+      });
+
+    // 拉取文档内容，初始化 websocket 连接
     const socket = new ReconnectingWebSocket(
-      `ws://localhost:8080?docId=${docId}`,
+      `ws://${
+        location.port ? location.hostname + ':8080' : location.host + '/ws'
+      }?docId=${docId}`,
     );
     const connection = new sharedb.Connection(socket as Socket);
     const curDoc = connection.get(COLL_DOC_COLLECTION, docId);
 
     curDoc.subscribe(function (err) {
-      if (err) throw err;
-      initQuill(curDoc);
+      if (err) {
+        throw err;
+      }
+      setDoc(curDoc);
     });
   }, [docId]);
+
+  useEffect(() => {
+    if (titleReady && doc?.data) {
+      initQuill(doc);
+    }
+  }, [titleReady, doc]);
 
   function initQuill(doc: Doc) {
     const quill = new Quill('#editor', {
@@ -111,8 +141,47 @@ export default function CollaborativeDoc() {
     return quill;
   }
 
+  function handleTitleChange(value: string): void {
+    setTitle(value);
+    const debounceUpdate = debounce(() => {
+      updateTitle(docId, value).catch((e) => {
+        Message.error('标题更新失败');
+        console.error(e);
+      });
+    }, 1000);
+
+    debounceUpdate();
+  }
+
+  if (!titleReady || !doc) {
+    return (
+      <Spin
+        loading
+        block
+        tip="文档内容拉取中，请稍后..."
+        className="loading-bar"
+      />
+    );
+  }
+
+  if (titleReady && doc && !doc?.data) {
+    return (
+      <Result
+        className="empty-doc"
+        status="404"
+        subTitle="没有找到该文档，请确认文档 ID 是否存在"
+      />
+    );
+  }
+
   return (
     <div id="coll-doc-container">
+      <Input
+        id="doc-title"
+        placeholder="请输入标题"
+        value={title}
+        onChange={handleTitleChange}
+      />
       <div id="toolbar">
         <Toolbar />
       </div>

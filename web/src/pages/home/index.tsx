@@ -19,6 +19,8 @@ import dayjs from 'dayjs';
 import './index.less';
 import { createMdDoc, searchMdDoc } from '@/services/mdDoc';
 import { EDocType, TMdDoc } from '@/typings/mdDoc';
+import { createCollDoc, getCollDocList } from '@/services/collDoc';
+import { CollDoc } from '@/typings/collDoc';
 
 const { Item: ListItem } = List;
 const { Group: RadioGroup } = Radio;
@@ -26,18 +28,29 @@ const { Item: FormItem, useForm } = Form;
 
 export default function Home() {
   const history = useHistory();
-  const [docs, setDocs] = useState<(TDoc | TMdDoc)[]>();
+  const [docs, setDocs] = useState<(TDoc | TMdDoc | CollDoc)[]>();
   const [loading, setLoading] = useState(true);
   const [visible, setVisible] = useState(false);
-  const [docType, setDocType] = useState<EDocType>(EDocType.MarkDown);
+  const [docType, setDocType] = useState<EDocType>(EDocType.CollDocs);
 
   const [form] = useForm();
 
   useEffect(() => {
-    const searchService =
-      docType === EDocType.MarkDown ? searchMdDoc : searchDoc;
-
-    searchService()
+    let searchService;
+    switch (docType) {
+      case EDocType.Docs:
+        searchService = searchDoc;
+        break;
+      case EDocType.MarkDown:
+        searchService = searchMdDoc;
+        break;
+      case EDocType.CollDocs:
+        searchService = getCollDocList;
+        break;
+      default:
+        return;
+    }
+    searchService({})
       .then((res) => setDocs(res))
       .finally(() => {
         setLoading(false);
@@ -49,6 +62,18 @@ export default function Home() {
       .then((res) => {
         const { _id: docId } = res;
         history.push(`/edit/${docId}`);
+      })
+      .catch((e: Error) => {
+        Message.error(e.message || '创建失败');
+        console.error(e);
+      });
+  }
+
+  function handleCreateCollDoc() {
+    createCollDoc({})
+      .then((res) => {
+        const { _id: docId } = res;
+        history.push(`/coll_doc/${docId}`);
       })
       .catch((e: Error) => {
         Message.error(e.message || '创建失败');
@@ -72,9 +97,21 @@ export default function Home() {
   }
 
   function handleEditDoc(docId: string) {
-    window.open(
-      docType === EDocType.Docs ? `/edit/${docId}` : `/md_edit/${docId}`,
-    );
+    let url = '';
+    switch (docType) {
+      case EDocType.Docs:
+        url = `/edit/${docId}`;
+        break;
+      case EDocType.MarkDown:
+        url = `/md_edit/${docId}`;
+        break;
+      case EDocType.CollDocs:
+        url = `/coll_doc/${docId}`;
+        break;
+      default:
+        return;
+    }
+    window.open(url);
   }
 
   return (
@@ -92,10 +129,13 @@ export default function Home() {
           trigger="click"
           droplist={
             <Menu>
-              <Menu.Item key="md" onClick={openModal}>
+              <Menu.Item key={EDocType.CollDocs} onClick={handleCreateCollDoc}>
+                协同文档
+              </Menu.Item>
+              <Menu.Item key={EDocType.MarkDown} onClick={openModal}>
                 MarkDown
               </Menu.Item>
-              <Menu.Item key="doc" onClick={handleCreateDoc} disabled>
+              <Menu.Item key={EDocType.Docs} onClick={handleCreateDoc} disabled>
                 文档 2.0
               </Menu.Item>
             </Menu>
@@ -129,6 +169,10 @@ export default function Home() {
               {
                 label: 'Markdown',
                 value: EDocType.MarkDown,
+              },
+              {
+                label: '协同文档',
+                value: EDocType.CollDocs,
               },
               {
                 label: '文档 2.0',

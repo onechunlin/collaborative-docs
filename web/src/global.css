@@ -12,3 +12,7 @@
 .text-center {
     text-align: center;
 }
+
+body {
+  background-color: rgb(var(--gray-1));
+}
