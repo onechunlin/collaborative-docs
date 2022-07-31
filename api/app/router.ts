@@ -19,6 +19,12 @@ export default (app: Application) => {
   router.post("/md_doc/detail", controller.mdDoc.detail);
   router.post("/md_doc/search", controller.mdDoc.search);
 
+  // 协同文档
+  router.post("/coll_doc/create", controller.collDoc.create);
+  router.post("/coll_doc/updateTitle", controller.collDoc.updateTitle);
+  router.post("/coll_doc/detail", controller.collDoc.detail);
+  router.post("/coll_doc/search", controller.collDoc.search);
+
   // websocket 路由
   io.of("/io/doc").route("detail", io.controller.doc.detail);
   io.of("/io/doc").route("update", io.controller.doc.update);

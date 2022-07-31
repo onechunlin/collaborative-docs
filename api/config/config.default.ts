@@ -9,7 +9,7 @@ export default (appInfo: EggAppInfo) => {
   config.keys = appInfo.name + "_1631334350186_1296";
 
   // add your egg config in here
-  config.middleware = ["auth"];
+  config.middleware = ["auth", "errorHandler"];
 
   // add your special config in here
   const bizConfig = {
@@ -62,12 +62,12 @@ export default (appInfo: EggAppInfo) => {
       options: {
         presence: true,
         db: {
-          url: 'mongodb+srv://admin:admin@cluster0.er3fd.mongodb.net/BasicDataBase?retryWrites=true&w=majority',
+          url: "mongodb+srv://admin:admin@cluster0.er3fd.mongodb.net/BasicDataBase?retryWrites=true&w=majority",
           options: {},
-          collection: 'collDoc'
-        }
+          collection: "collDoc",
+        },
       },
-    }
+    },
   };
 
   // the return config will combines to EggAppConfig

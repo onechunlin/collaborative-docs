@@ -10,6 +10,11 @@ const qs = require('qs');
 
 
 module.exports = app => {
+  const sharedbDoc = initServer(app);
+  app.sharedbDoc = sharedbDoc;
+};
+
+function initServer(app) {
   // 注册富文本类型
   ShareDB.types.register(richText.type);
   // 创建 sharedb 实例
@@ -19,8 +24,10 @@ module.exports = app => {
     ...app.config.sharedb.options,
     db,
   });
-  startServer(backend, app)
-};
+  const sharedbDoc = startServer(backend, app);
+
+  return sharedbDoc;
+}
 
 function startServer(backend, app) {
   const { options, port } = app.config.sharedb;
@@ -43,17 +50,17 @@ function startServer(backend, app) {
     // 获取 doc 的数据
     doc.fetch(function(err) {
       if (err) throw err;
-      // 如果该记录不存在的话
-      // todo 之后
-      if (doc.type === null) {
-        doc.create([{insert: ''}], richText.type.name);
-        return;
-      }
+      // // 如果该记录不存在的话
+      // if (doc.type === null) {
+      //   doc.create([{insert: ''}], richText.type.name);
+      //   return;
+      // }
     });
 
     // 将 websocket 的包打成 JSON 流
     const stream = new WebSocketJSONStream(ws);
 
+    // 监听 stream 的错误、结束和关闭
     stream.on('error', error => {
       console.log('server stream error, the message is ', error.message);
     });
@@ -62,4 +69,9 @@ function startServer(backend, app) {
 
     backend.listen(stream);
   });
+
+  const getSharedbDoc = docId => {
+    return connection.get(dbCollection, docId);
+  }
+  return getSharedbDoc;
 }
