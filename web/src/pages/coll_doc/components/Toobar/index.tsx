@@ -25,7 +25,6 @@ const Toolbar: FC = () => {
       >
         <Button className="ql-bold"></Button>
       </CustomTooltip>
-
       <CustomTooltip
         tips="斜体"
         hotKey={
@@ -36,7 +35,6 @@ const Toolbar: FC = () => {
       >
         <Button className="ql-italic"></Button>
       </CustomTooltip>
-
       <CustomTooltip
         tips="下划线"
         hotKey={
