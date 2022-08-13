@@ -1,7 +1,7 @@
 import { Controller, Context } from "egg";
 import { CollDoc } from "../../typings/app/controller/collDoc";
-import { type } from "rich-text";
 import { sleep } from "../utils";
+import { type } from "ot-json1";
 
 interface UpdateTitleReq {
   id: string;
@@ -27,11 +27,27 @@ export default class DocController extends Controller {
       const { _id: docId } = res;
       const doc = this.app.sharedbDoc(docId.toString());
       // 创建文档 op 快照
-      doc.create([{ insert: "" }], type.name, (err) => {
-        if (err) {
-          throw err;
+      doc.create(
+        {
+          title: "",
+          content: [
+            {
+              type: "paragraph",
+              children: [
+                {
+                  text: "",
+                },
+              ],
+            },
+          ],
+        },
+        type.name,
+        (err) => {
+          if (err) {
+            throw err;
+          }
         }
-      });
+      );
 
       // 先睡一秒，确保文档快照创建成功
       await sleep(1000);

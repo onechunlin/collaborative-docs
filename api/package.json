@@ -32,6 +32,7 @@
     "egg-socket.io": "^4.1.6",
     "immer": "^9.0.12",
     "lodash": "^4.17.21",
+    "ot-json1": "^1.0.2",
     "qs": "^6.11.0",
     "rich-text": "^4.1.0",
     "sharedb": "^3.0.0",
@@ -41,8 +42,8 @@
   "devDependencies": {
     "@types/mocha": "^2.2.40",
     "@types/node": "^7.0.12",
-    "@types/supertest": "^2.0.0",
     "@types/sharedb": "^3.0.0",
+    "@types/supertest": "^2.0.0",
     "@typescript-eslint/eslint-plugin": "^5.19.0",
     "@typescript-eslint/parser": "^5.19.0",
     "autod": "^3.0.1",
