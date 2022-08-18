@@ -1,6 +1,8 @@
 import { Editor, Transforms, Text } from 'slate';
 
 export const CustomEditor = {
+  ...Editor,
+
   isBoldMarkActive(editor: Editor): boolean {
     const [match] = Editor.nodes(editor, {
       match: (n) => {

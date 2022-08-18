@@ -1,5 +1,12 @@
 import { useCallback, useEffect, useState } from 'react';
-import { createEditor, Descendant, Editor, Node, Operation } from 'slate';
+import {
+  createEditor,
+  Descendant,
+  Editor,
+  Node,
+  Operation,
+  Transforms,
+} from 'slate';
 import {
   Slate,
   Editable,
@@ -17,37 +24,29 @@ import { type as json1Type } from 'ot-json1';
 import ReconnectingWebSocket from 'reconnecting-websocket';
 import { Socket } from 'sharedb/lib/sharedb';
 import { COLL_DOC_COLLECTION } from '@/constants';
-import { getSlateOpFromJson, withOtJson0 } from './plugins/withOtJson0';
+import { getJsonOpFromSlate, getSlateOpFromJson } from './utils/ot';
+import { Spin } from '@arco-design/web-react';
+import './index.less';
 
-const presenceId = new ObjectID().toString();
 sharedb.types.register(json1Type);
 
-const defaultValue: Descendant[] = [
-  {
-    type: 'paragraph',
-    children: [
-      {
-        text: '321312',
-      },
-    ],
-  },
-];
 interface CollDoc {
   title: string;
   content: Descendant[];
 }
 
 export default function CollaborativeDoc() {
-  const [editor, setEditor] = useState(() =>
-    withReact(withHistory(createEditor())),
-  );
+  const [editor] = useState(() => withReact(withHistory(createEditor())));
   console.log(
-    '🚀 ~ file: [docId].tsx ~ line 34 ~ CollaborativeDoc ~ editor',
+    '🚀 ~ file: [docId].tsx ~ line 33 ~ CollaborativeDoc ~ editor',
     editor,
   );
 
   const { docId } = useParams<{ docId: string }>();
+  const [doc, setDoc] = useState<Doc<CollDoc>>();
+
   const [docData, setDocData] = useState<CollDoc>();
+  editor.children = docData?.content || [];
 
   useEffect(() => {
     // 拉取文档内容，初始化 websocket 连接
@@ -57,34 +56,40 @@ export default function CollaborativeDoc() {
       }?docId=${docId}`,
     );
     const connection = new sharedb.Connection(socket as Socket);
-    const doc: Doc<CollDoc> = connection.get(COLL_DOC_COLLECTION, docId);
+    const curDoc: Doc<CollDoc> = connection.get(COLL_DOC_COLLECTION, docId);
 
-    doc.subscribe(function (err) {
+    curDoc.subscribe(function (err) {
       if (err) {
         throw err;
       }
-      setDocData(doc.data);
-      setEditor(withOtJson0(editor, doc));
+      setDoc(curDoc);
+      setDocData(curDoc.data);
+      console.log('🚀 ~ file: [docId].tsx ~ line 56 ~ doc.data', curDoc.data);
+
       // 监听 op 操作，如果不是自身 op 则更新文档
-      doc.on('op', function (op, source) {
+      curDoc.on('op', function (op, source) {
         // 如果来源是自身的 op 操作，则忽略
         if (source) {
           return;
         }
+        console.log('🚀 ~ file: [docId].tsx ~ line 71 ~ op', op);
 
-        const slateOp = getSlateOpFromJson(op);
-        if (slateOp) {
-          editor.apply(slateOp);
-        }
-        // setDocData(newDocData);
+        const newDocData = json1Type.apply(docData, op) as CollDoc;
+        setDocData(newDocData);
       });
     });
   }, [docId]);
 
   const renderElement = useCallback((props: RenderElementProps) => {
-    switch (props.element.type) {
+    const { attributes, children, element } = props;
+    switch (element.type) {
       case 'code':
         return <CodeElement {...props} />;
+      case 'heading-one':
+        return <h1 {...attributes}>{children}</h1>;
+      case 'heading-two':
+        return <h2 {...attributes}>{children}</h2>;
+
       default:
         return <DefaultElement {...props} />;
     }
@@ -99,21 +104,66 @@ export default function CollaborativeDoc() {
       title: docData?.title || '',
       content: val,
     });
+    if (!doc) {
+      return;
+    }
+    // operations.forEach((operation) => {
+    //   const jsonOp = getJsonOpFromSlate(operation);
+    //   if (jsonOp) {
+    //     doc.submitOp(jsonOp);
+    //   }
+    // });
   };
 
   if (!docData) {
-    return <span>loading</span>;
+    return (
+      <Spin
+        loading
+        block
+        tip="文档内容拉取中，请稍后..."
+        className="loading-bar"
+      />
+    );
   }
 
   return (
-    <Slate editor={editor} value={docData.content} onChange={handleValueChange}>
-      <Editable
-        renderElement={renderElement}
-        renderLeaf={renderLeaf}
-        onKeyDown={(event) => {
-          handleKeyDown(editor, event);
+    <div id="coll-doc-container">
+      <button
+        onClick={() => {
+          Transforms.insertNodes(
+            editor,
+            [
+              {
+                type: 'code',
+                children: [
+                  {
+                    text: 'test',
+                  },
+                ],
+              },
+            ],
+            {
+              hanging: true,
+            },
+          );
         }}
-      />
-    </Slate>
+      >
+        点击
+      </button>
+      <Slate
+        editor={editor}
+        value={docData.content}
+        onChange={handleValueChange}
+      >
+        <Editable
+          className="editor"
+          renderElement={renderElement}
+          renderLeaf={renderLeaf}
+          onKeyDown={(event) => {
+            handleKeyDown(editor, event);
+          }}
+        />
+      </Slate>
+    </div>
   );
 }
