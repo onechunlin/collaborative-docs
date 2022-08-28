@@ -8,7 +8,7 @@ export default function BasicLayout(props: any) {
   const { children } = props;
   const history = useHistory();
 
-  const showAvatar = !['/login', '/register'].includes(location.pathname);
+  const showAvatar = !['/login', '/register', '/'].includes(location.pathname);
   return (
     <Layout className="basic-layout">
       <Header className="header">

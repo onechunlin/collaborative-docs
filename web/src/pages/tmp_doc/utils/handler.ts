@@ -14,9 +14,13 @@ export const handleKeyDown = (
       event.preventDefault();
       CustomEditor.toggleBoldMark(editor);
       break;
-    case '`':
+    case 'i':
       event.preventDefault();
-      CustomEditor.toggleCodeBlock(editor);
+      CustomEditor.toggleItalicMark(editor);
+      break;
+    case 'u':
+      event.preventDefault();
+      CustomEditor.toggleUnderlineMark(editor);
       break;
     default:
       break;

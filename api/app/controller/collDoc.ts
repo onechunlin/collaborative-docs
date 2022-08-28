@@ -28,19 +28,16 @@ export default class DocController extends Controller {
       const doc = this.app.sharedbDoc(docId.toString());
       // 创建文档 op 快照
       doc.create(
-        {
-          title: "",
-          content: [
-            {
-              type: "paragraph",
-              children: [
-                {
-                  text: "",
-                },
-              ],
-            },
-          ],
-        },
+        [
+          {
+            type: "paragraph",
+            children: [
+              {
+                text: "",
+              },
+            ],
+          },
+        ],
         type.name,
         (err) => {
           if (err) {
@@ -58,6 +55,7 @@ export default class DocController extends Controller {
         data: res,
       };
     } catch (error) {
+      console.error(error);
       ctx.body = {
         status: 500,
         msg: "创建失败",

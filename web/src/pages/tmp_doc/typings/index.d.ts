@@ -1,6 +1,7 @@
 import { BaseEditor, Descendant } from 'slate';
 import { ReactEditor } from 'slate-react';
 import { HistoryEditor } from 'slate-history';
+import { WebSocketEditor } from '../plugins/withWebSocket';
 
 export type ParagraphElement = {
   type: 'paragraph';
@@ -18,7 +19,12 @@ export type HeadingElement = {
   children: CustomText[];
 };
 
-export type FormattedText = { text: string; bold?: true };
+export type FormattedText = {
+  text: string;
+  bold?: boolean;
+  italic?: boolean;
+  underline?: boolean;
+};
 
 export type CustomElement = ParagraphElement | CodeElement | HeadingElement;
 
@@ -26,7 +32,7 @@ export type CustomText = FormattedText;
 
 declare module 'slate' {
   interface CustomTypes {
-    Editor: BaseEditor & ReactEditor & HistoryEditor;
+    Editor: BaseEditor & ReactEditor & HistoryEditor & WebSocketEditor;
     Element: CustomElement;
     Text: CustomText;
   }
