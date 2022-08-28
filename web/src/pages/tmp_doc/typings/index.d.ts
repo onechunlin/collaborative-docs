@@ -21,9 +21,16 @@ export type HeadingElement = {
 
 export type FormattedText = {
   text: string;
+  // 加粗
   bold?: boolean;
+  // 斜体
   italic?: boolean;
+  // 下划线
   underline?: boolean;
+  // 删除线
+  lineThrough?: boolean;
+  // 上标/下标
+  textScript?: 'super' | 'sub';
 };
 
 export type CustomElement = ParagraphElement | CodeElement | HeadingElement;

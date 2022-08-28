@@ -1,5 +1,5 @@
-import { useCallback, useEffect, useMemo, useRef, useState } from 'react';
-import { createEditor, Descendant, Transforms } from 'slate';
+import { useCallback, useMemo, useState } from 'react';
+import { createEditor, Descendant } from 'slate';
 import {
   Slate,
   Editable,
@@ -8,22 +8,21 @@ import {
   RenderLeafProps,
 } from 'slate-react';
 import { withHistory } from 'slate-history';
-import { CodeElement, DefaultElement, Leaf } from './components/Elements';
+import {
+  CodeElement,
+  DefaultElement,
+  Leaf,
+  Paragraph,
+} from './components/Elements';
 import { handleKeyDown } from './utils/handler';
 import { Doc } from 'sharedb/lib/client';
 import { useParams } from 'umi';
-import { type, Doc as JsonDoc } from 'ot-json1';
 import { COLL_DOC_COLLECTION } from '@/constants';
 import './index.less';
 import HoveringToolbar from './components/HoveringToolbar';
 import { WebSocketPluginOptions } from './plugins/withWebSocket';
 import withIOCollaboration from './plugins/withIOCollaboration';
 import { Spin } from '@arco-design/web-react';
-
-interface CollDoc {
-  title: string;
-  content: Descendant[];
-}
 
 const defaultValue: Descendant[] = [
   {
@@ -65,15 +64,12 @@ export default function CollaborativeDoc() {
   }, []);
 
   const renderElement = useCallback((props: RenderElementProps) => {
-    const { attributes, children, element } = props;
+    const { element } = props;
     switch (element.type) {
       case 'code':
         return <CodeElement {...props} />;
-      case 'heading-one':
-        return <h1 {...attributes}>{children}</h1>;
-      case 'heading-two':
-        return <h2 {...attributes}>{children}</h2>;
-
+      case 'paragraph':
+        return <Paragraph {...props} />;
       default:
         return <DefaultElement {...props} />;
     }

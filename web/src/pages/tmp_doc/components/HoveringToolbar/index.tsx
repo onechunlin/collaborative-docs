@@ -115,6 +115,56 @@ const HoveringToolbar: FC = () => {
             CustomEditor.toggleUnderlineMark(editor);
           }}
         />
+        <Action
+          icon='icon-04shanchuxian'
+          active={CustomEditor.isLineThroughMarkActive(editor)}
+          onClick={(): void => {
+            CustomEditor.toggleLineThroughMark(editor);
+          }}
+        />
+
+        <Action
+          icon='icon-06shangbiao'
+          active={CustomEditor.isScriptMarkActive(editor, 'super')}
+          onClick={(): void => {
+            CustomEditor.toggleSuperScriptMark(editor);
+          }}
+        />
+        <Action
+          icon='icon-05xiabiao'
+          active={CustomEditor.isScriptMarkActive(editor, 'sub')}
+          onClick={(): void => {
+            CustomEditor.toggleSubScriptMark(editor);
+          }}
+        />
+        <Action
+          icon='icon-09zuoduiqi'
+          active={CustomEditor.isParagraphTextAlignActive(editor, 'left')}
+          onClick={(): void => {
+            CustomEditor.toggleParagraphTextAlign(editor, 'left');
+          }}
+        />
+        <Action
+          icon='icon-11juzhongduiqi'
+          active={CustomEditor.isParagraphTextAlignActive(editor, 'center')}
+          onClick={(): void => {
+            CustomEditor.toggleParagraphTextAlign(editor, 'center');
+          }}
+        />
+        <Action
+          icon='icon-10youduiqi'
+          active={CustomEditor.isParagraphTextAlignActive(editor, 'right')}
+          onClick={(): void => {
+            CustomEditor.toggleParagraphTextAlign(editor, 'right');
+          }}
+        />
+        <Action
+          icon='icon-12liangduanduiqi'
+          active={CustomEditor.isParagraphTextAlignActive(editor, 'justify')}
+          onClick={(): void => {
+            CustomEditor.toggleParagraphTextAlign(editor, 'justify');
+          }}
+        />
       </div>
     </Portal>
   );
