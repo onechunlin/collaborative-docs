@@ -1,5 +1,27 @@
-import { FC } from 'react';
+import { CSSProperties, FC } from 'react';
 import { RenderElementProps, RenderLeafProps } from 'slate-react';
+import { ParagraphElement } from '../../typings';
+import { getTextDecoration } from '../../utils/element';
+
+/**
+ * 段落节点
+ * @param props
+ * @returns
+ */
+export const Paragraph: FC<RenderElementProps> = (props) => {
+  const { attributes, children, element } = props;
+
+  return (
+    <p
+      {...attributes}
+      style={{
+        marginBottom: 6,
+        textAlign: (element as ParagraphElement).textAlign,
+      }}>
+      {children}
+    </p>
+  );
+};
 
 /**
  * 代码块节点
@@ -32,14 +54,37 @@ export const DefaultElement: FC<RenderElementProps> = (props) => {
  */
 export const Leaf: FC<RenderLeafProps> = (props) => {
   const { attributes, children, leaf } = props;
+  let textStyle: CSSProperties = {
+    fontSize: 16,
+    fontWeight: leaf.bold ? 'bold' : 'normal',
+    fontStyle: leaf.italic ? 'italic' : 'normal',
+    textDecoration: getTextDecoration(leaf),
+  };
+
+  switch (leaf.textScript) {
+    case 'super':
+      textStyle = {
+        ...textStyle,
+        fontSize: 12,
+        position: 'relative',
+        top: '-0.25em',
+        verticalAlign: 'top',
+      };
+      break;
+    case 'sub':
+      textStyle = {
+        ...textStyle,
+        fontSize: 12,
+        position: 'relative',
+        bottom: '-0.25em',
+        verticalAlign: 'bottom',
+      };
+      break;
+    default:
+      break;
+  }
   return (
-    <span
-      {...attributes}
-      style={{
-        fontWeight: leaf.bold ? 'bold' : 'normal',
-        fontStyle: leaf.italic ? 'italic' : 'normal',
-        textDecoration: leaf.underline ? 'underline' : 'none',
-      }}>
+    <span {...attributes} style={textStyle}>
       {children}
     </span>
   );

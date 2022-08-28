@@ -1,4 +1,5 @@
-import { Editor, Transforms, Text } from 'slate';
+import { Editor, Transforms, Text, Element } from 'slate';
+import { ParagraphElement } from '../typings';
 
 /**
  * 判断函数
@@ -7,7 +8,7 @@ const JudgmentFunction = {
   // 当前选择区域是否加粗
   isBoldMarkActive(editor: Editor): boolean {
     const [match] = Editor.nodes(editor, {
-      match: (n) => n.bold,
+      match: (n) => !!(n as Text).bold,
       universal: true,
     });
 
@@ -17,7 +18,7 @@ const JudgmentFunction = {
   // 当前选择区域是否斜体
   isItalicMarkActive(editor: Editor): boolean {
     const [match] = Editor.nodes(editor, {
-      match: (n) => n.italic,
+      match: (n) => !!(n as Text).italic,
       universal: true,
     });
 
@@ -27,7 +28,41 @@ const JudgmentFunction = {
   // 当前选择区域是否下划线
   isUnderlineMarkActive(editor: Editor): boolean {
     const [match] = Editor.nodes(editor, {
-      match: (n) => n.underline,
+      match: (n) => !!(n as Text).underline,
+      universal: true,
+    });
+
+    return !!match;
+  },
+
+  // 当前选择区域是否删除线
+  isLineThroughMarkActive(editor: Editor): boolean {
+    const [match] = Editor.nodes(editor, {
+      match: (n) => !!(n as Text).lineThrough,
+      universal: true,
+    });
+
+    return !!match;
+  },
+
+  // 当前选择区域是否上下标
+  isScriptMarkActive(editor: Editor, script: 'super' | 'sub'): boolean {
+    const [match] = Editor.nodes(editor, {
+      match: (n) => (n as Text).textScript === script,
+      universal: true,
+    });
+
+    return !!match;
+  },
+
+  // 当前段落对齐方式
+  isParagraphTextAlignActive(
+    editor: Editor,
+    align: 'left' | 'center' | 'right' | 'justify',
+  ): boolean {
+    const [match] = Editor.nodes(editor, {
+      match: (n) =>
+        Element.isElement(n) && (n as ParagraphElement).textAlign === align,
       universal: true,
     });
 
@@ -66,6 +101,49 @@ const ActionFunction = {
       editor,
       { underline: isActive ? undefined : true },
       { match: (n) => Text.isText(n), split: true },
+    );
+  },
+
+  // 切换删除线
+  toggleLineThroughMark(editor: Editor): void {
+    const isActive = JudgmentFunction.isLineThroughMarkActive(editor);
+    Transforms.setNodes(
+      editor,
+      { lineThrough: isActive ? undefined : true },
+      { match: (n) => Text.isText(n), split: true },
+    );
+  },
+
+  // 切换上标
+  toggleSuperScriptMark(editor: Editor): void {
+    const isActive = JudgmentFunction.isScriptMarkActive(editor, 'super');
+    Transforms.setNodes(
+      editor,
+      { textScript: isActive ? undefined : 'super' },
+      { match: (n) => Text.isText(n), split: true },
+    );
+  },
+
+  // 切换下标
+  toggleSubScriptMark(editor: Editor): void {
+    const isActive = JudgmentFunction.isScriptMarkActive(editor, 'sub');
+    Transforms.setNodes(
+      editor,
+      { textScript: isActive ? undefined : 'sub' },
+      { match: (n) => Text.isText(n), split: true },
+    );
+  },
+
+  // 切换段落对齐方式
+  toggleParagraphTextAlign(
+    editor: Editor,
+    align: 'left' | 'center' | 'right' | 'justify',
+  ): void {
+    const isActive = JudgmentFunction.isParagraphTextAlignActive(editor, align);
+    Transforms.setNodes(
+      editor,
+      { textAlign: isActive ? undefined : align },
+      { match: (n) => Element.isElement(n) },
     );
   },
 };
