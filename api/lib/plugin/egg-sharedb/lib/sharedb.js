@@ -2,7 +2,8 @@
 
 const ShareDB = require('sharedb');
 const WebSocket = require('ws');
-const richText = require('rich-text');
+const json1 = require('ot-json1');
+
 const WebSocketJSONStream = require('@teamwork/websocket-json-stream');
 const sharedbMongo = require('sharedb-mongo');
 const parseUrl = require('url').parse;
@@ -15,8 +16,8 @@ module.exports = app => {
 };
 
 function initServer(app) {
-  // 注册富文本类型
-  ShareDB.types.register(richText.type);
+    // 注册富文本类型
+    ShareDB.types.register(json1.type);
   // 创建 sharedb 实例
   const { url: dbUrl, options: dbOptions } = app.config.sharedb.options.db;
   const db = sharedbMongo(dbUrl, dbOptions);
@@ -59,7 +60,9 @@ function startServer(backend, app) {
 
     // 将 websocket 的包打成 JSON 流
     const stream = new WebSocketJSONStream(ws);
-
+    stream.on('data', (chunk) => {
+      console.log("🚀 ~ file: sharedb.js ~ line 60 ~ stream.on ~ chunk", chunk)
+    })
     // 监听 stream 的错误、结束和关闭
     stream.on('error', error => {
       console.log('server stream error, the message is ', error.message);

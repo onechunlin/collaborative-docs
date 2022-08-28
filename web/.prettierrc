@@ -7,5 +7,18 @@
       "files": ".prettierrc",
       "options": { "parser": "json" }
     }
-  ]
+  ],
+  "tabWidth": 2,
+  "useTabs": false,
+  "semi": true,
+  "quoteProps": "as-needed",
+  "jsxSingleQuote": true,
+  "bracketSpacing": true,
+  "jsxBracketSameLine": true,
+  "requirePragma": false,
+  "insertPragma": false,
+  "proseWrap": "preserve",
+  "htmlWhitespaceSensitivity": "ignore",
+  "endOfLine": "lf",
+  "embeddedLanguageFormatting": "auto"
 }

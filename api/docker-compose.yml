@@ -1,0 +1,40 @@
+version: "3.9"
+
+services:
+  # app:
+  #   build: ./
+  #   ports:
+  #     - 7001:7001
+  #     - 8080:8080
+  #   volumes:
+  #     - ./:/app
+  #   environment:
+  #     - TZ=Asia/Shanghai
+  #     - EGG_SERVER_ENV=local
+  #     - MONGO_URL=mongodb://root:coll_doc_is_funny@mongo:27017?retryWrites=true&w=majority
+
+  redis:
+    image: redis:6.2.7
+    command: redis-server --requirepass redis_password
+    volumes:
+      - redis:/data
+    ports:
+      - 6379:6379
+    environment:
+      - TZ=Asia/Shanghai
+
+  mongo:
+    image: mongo:4.4
+    restart: always
+    volumes:
+      - mongo:/data/db
+    ports:
+      - 27017:27017
+    environment:
+      - TZ=Asia/Shanghai
+      - MONGO_INITDB_ROOT_USERNAME=root
+      - MONGO_INITDB_ROOT_PASSWORD=coll_doc_is_funny
+
+volumes:
+  mongo:
+  redis:

@@ -1,4 +1,4 @@
-// This file is created by egg-ts-helper@1.30.4
+// This file is created by egg-ts-helper@1.33.0
 // Do not modify this file!!!!!!!!!
 
 import 'egg';
@@ -15,6 +15,7 @@ import 'egg-static';
 import 'egg-jsonp';
 import 'egg-view';
 import 'egg-mongoose';
+import 'egg-redis';
 import 'egg-cors';
 import 'egg-socket.io';
 import 'egg-jwt';
@@ -34,6 +35,7 @@ declare module 'egg' {
     jsonp?: EggPluginItem;
     view?: EggPluginItem;
     mongoose?: EggPluginItem;
+    redis?: EggPluginItem;
     cors?: EggPluginItem;
     io?: EggPluginItem;
     jwt?: EggPluginItem;

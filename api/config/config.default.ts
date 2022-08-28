@@ -11,13 +11,28 @@ export default (appInfo: EggAppInfo) => {
   // add your egg config in here
   config.middleware = ["auth", "errorHandler"];
 
+  const {
+    REDIS_HOST = "127.0.0.1",
+    REDIS_PORT = 6379,
+    REDIS_PASSWORD = "redis_password",
+    MONGO_URL = "mongodb://root:coll_doc_is_funny@127.0.0.1:27017?retryWrites=true&w=majority",
+  } = process.env;
+
   // add your special config in here
   const bizConfig = {
     mongoose: {
       client: {
-        url: "mongodb+srv://admin:admin@cluster0.er3fd.mongodb.net/BasicDataBase?retryWrites=true&w=majority",
+        url: MONGO_URL,
         options: {},
         plugins: [],
+      },
+    },
+    redis: {
+      client: {
+        port: REDIS_PORT,
+        host: REDIS_HOST,
+        password: REDIS_PASSWORD,
+        db: 0,
       },
     },
     jwt: {
@@ -62,7 +77,7 @@ export default (appInfo: EggAppInfo) => {
       options: {
         presence: true,
         db: {
-          url: "mongodb+srv://admin:admin@cluster0.er3fd.mongodb.net/BasicDataBase?retryWrites=true&w=majority",
+          url: MONGO_URL,
           options: {},
           collection: "collDoc",
         },
