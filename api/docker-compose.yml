@@ -13,15 +13,16 @@ services:
   #     - EGG_SERVER_ENV=local
   #     - MONGO_URL=mongodb://root:coll_doc_is_funny@mongo:27017?retryWrites=true&w=majority
 
-  redis:
-    image: redis:6.2.7
-    command: redis-server --requirepass redis_password
-    volumes:
-      - redis:/data
-    ports:
-      - 6379:6379
-    environment:
-      - TZ=Asia/Shanghai
+  # 暂时不需要
+  # redis:
+  #   image: redis:6.2.7
+  #   command: redis-server --requirepass redis_password
+  #   volumes:
+  #     - redis:/data
+  #   ports:
+  #     - 6379:6379
+  #   environment:
+  #     - TZ=Asia/Shanghai
 
   mongo:
     image: mongo:4.4
@@ -37,4 +38,4 @@ services:
 
 volumes:
   mongo:
-  redis:
+  # redis:

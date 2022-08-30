@@ -68,6 +68,17 @@ const JudgmentFunction = {
 
     return !!match;
   },
+
+  // 获取当前选择文本的字体大小
+  getFontSize(editor: Editor): number | undefined {
+    const [match] = Editor.nodes(editor, {
+      match: (n) => Text.isText(n),
+      universal: true,
+    });
+    const [node] = match || [];
+
+    return (node as Text)?.size;
+  },
 };
 
 /**
@@ -143,7 +154,37 @@ const ActionFunction = {
     Transforms.setNodes(
       editor,
       { textAlign: isActive ? undefined : align },
-      { match: (n) => Element.isElement(n) },
+      { match: (n) => Element.isElement(n) && n.type === 'paragraph' },
+    );
+  },
+
+  // 切换字体大小
+  toggleFontSize(editor: Editor, size: number): void {
+    const isActive = JudgmentFunction.getFontSize(editor) === size;
+
+    // 当调整不同字体大小的字体时，偶尔导致选区和实际的 selection 不一致，应该是 slate 的一个 bug
+    Transforms.setNodes(
+      editor,
+      { size: isActive ? undefined : size },
+      { match: (n) => Text.isText(n), split: true },
+    );
+  },
+
+  // 切换字体颜色
+  toggleFontColor(editor: Editor, color: string): void {
+    Transforms.setNodes(
+      editor,
+      { color: color },
+      { match: (n) => Text.isText(n), split: true },
+    );
+  },
+
+  // 切换背景颜色
+  toggleBgColor(editor: Editor, color: string): void {
+    Transforms.setNodes(
+      editor,
+      { bgColor: color },
+      { match: (n) => Text.isText(n), split: true },
     );
   },
 };
