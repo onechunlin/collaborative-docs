@@ -5,6 +5,7 @@ import { WebSocketEditor } from '../plugins/withWebSocket';
 
 export type ParagraphElement = {
   type: 'paragraph';
+  textAlign?: 'left' | 'center' | 'right' | 'justify';
   children: Descendant[];
 };
 
@@ -31,6 +32,12 @@ export type FormattedText = {
   lineThrough?: boolean;
   // 上标/下标
   textScript?: 'super' | 'sub';
+  // 字体大小
+  size?: number;
+  // 字体颜色
+  color?: string;
+  // 背景颜色
+  bgColor?: string;
 };
 
 export type CustomElement = ParagraphElement | CodeElement | HeadingElement;

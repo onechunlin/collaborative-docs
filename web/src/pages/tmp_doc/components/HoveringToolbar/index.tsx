@@ -6,6 +6,8 @@ import cx from 'classnames';
 import { CustomEditor } from '../../utils/command';
 import IconFont from '../IconFont';
 import Portal from '../Portal';
+import FontSize from './FontSize';
+import ColorSelect from './ColorSelect';
 import './index.less';
 
 const toolbarGap = 4;
@@ -94,6 +96,12 @@ const HoveringToolbar: FC = () => {
         onMouseDown={(e) => {
           e.preventDefault();
         }}>
+        <FontSize
+          value={CustomEditor.getFontSize(editor)}
+          onChange={(fontSize) => {
+            CustomEditor.toggleFontSize(editor, fontSize);
+          }}
+        />
         <Action
           icon='icon-01jiacu'
           active={CustomEditor.isBoldMarkActive(editor)}
@@ -122,7 +130,20 @@ const HoveringToolbar: FC = () => {
             CustomEditor.toggleLineThroughMark(editor);
           }}
         />
-
+        <ColorSelect
+          cacheKey='font-color'
+          icon={<IconFont type='icon-24zitiyanse' />}
+          onChange={(color) => {
+            CustomEditor.toggleFontColor(editor, color);
+          }}
+        />
+        <ColorSelect
+          cacheKey='bg-color'
+          icon={<IconFont type='icon-19beijingyanse' />}
+          onChange={(color) => {
+            CustomEditor.toggleBgColor(editor, color);
+          }}
+        />
         <Action
           icon='icon-06shangbiao'
           active={CustomEditor.isScriptMarkActive(editor, 'super')}

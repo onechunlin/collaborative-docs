@@ -1,3 +1,4 @@
+import { DEFAULT_FONT_COLOR, DEFAULT_FONT_SIZE } from '@/constants';
 import { CSSProperties, FC } from 'react';
 import { RenderElementProps, RenderLeafProps } from 'slate-react';
 import { ParagraphElement } from '../../typings';
@@ -55,10 +56,12 @@ export const DefaultElement: FC<RenderElementProps> = (props) => {
 export const Leaf: FC<RenderLeafProps> = (props) => {
   const { attributes, children, leaf } = props;
   let textStyle: CSSProperties = {
-    fontSize: 16,
+    fontSize: leaf.size || DEFAULT_FONT_SIZE,
     fontWeight: leaf.bold ? 'bold' : 'normal',
     fontStyle: leaf.italic ? 'italic' : 'normal',
     textDecoration: getTextDecoration(leaf),
+    color: leaf.color || DEFAULT_FONT_COLOR,
+    backgroundColor: leaf.bgColor,
   };
 
   switch (leaf.textScript) {

@@ -1,0 +1,44 @@
+.color-select {
+  display: flex;
+  align-items: center;
+  border-radius: 4px;
+  padding: 0 2px;
+
+  .color-set {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    cursor: pointer;
+    border-radius: 4px;
+
+    .icon {
+      font-size: 20px;
+      display: flex;
+    }
+
+    .color-preview {
+      height: 2px;
+      width: 12px;
+      margin: 0 auto 2px;
+      border-radius: 4px;
+      background-color: #000;
+    }
+
+    &:hover {
+      background-color: rgb(var(--gray-3));
+    }
+  }
+
+  .caret-down {
+    cursor: pointer;
+    border-radius: 4px;
+
+    &:hover {
+      background-color: rgb(var(--gray-3));
+    }
+  }
+}
+
+.active {
+  background-color: rgb(var(--gray-3));
+}
