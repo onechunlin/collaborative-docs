@@ -1,17 +1,13 @@
 import { Application } from "egg";
 
 export default (app: Application) => {
-  const { controller, router, io } = app as any;
+  const { controller, router } = app as any;
   router.prefix("/api");
 
   router.post("/user/login", controller.user.login);
   router.post("/user/register", controller.user.register);
   router.get("/user/userInfo", controller.user.userInfo);
   router.get("/user/getToken", controller.user.getToken);
-
-  router.post("/doc/create", controller.doc.create);
-  router.post("/doc/delete", controller.doc.delete);
-  router.post("/doc/search", controller.doc.search);
 
   // md 文档接口
   router.post("/md_doc/create", controller.mdDoc.create);
@@ -24,9 +20,4 @@ export default (app: Application) => {
   router.post("/coll_doc/updateTitle", controller.collDoc.updateTitle);
   router.post("/coll_doc/detail", controller.collDoc.detail);
   router.post("/coll_doc/search", controller.collDoc.search);
-
-  // websocket 路由
-  io.of("/io/doc").route("detail", io.controller.doc.detail);
-  io.of("/io/doc").route("update", io.controller.doc.update);
-  io.of("/io/doc").route("disconnect", io.controller.doc.disconnect);
 };

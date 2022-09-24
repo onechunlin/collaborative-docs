@@ -1,4 +1,3 @@
-import { TDoc } from '@/typings/doc';
 import { request } from '@/utils/request';
 
 type TLogin = {
@@ -42,29 +41,5 @@ export function getToken(): Promise<{ token: string }> {
   return request({
     method: 'get',
     url: '/api/user/getToken',
-  });
-}
-
-/**
- * 创建文档
- */
-export function createDoc(params: Partial<TDoc>): Promise<TDoc> {
-  return request({
-    method: 'post',
-    url: '/api/doc/create',
-    data: {
-      ...params,
-      creator: window.userInfo.username,
-    },
-  });
-}
-
-/**
- * 查找文档
- */
-export function searchDoc(): Promise<TDoc[]> {
-  return request({
-    method: 'post',
-    url: '/api/doc/search',
   });
 }

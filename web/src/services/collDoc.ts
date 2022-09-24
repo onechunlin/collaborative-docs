@@ -32,7 +32,7 @@ export async function collDocInfoDetail(docId: string): Promise<CollDoc> {
  */
 export async function updateTitle(
   docId: string,
-  title: string,
+  title?: string,
 ): Promise<CollDoc> {
   return await request({
     method: 'post',

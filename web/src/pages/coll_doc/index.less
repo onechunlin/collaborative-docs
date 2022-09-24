@@ -1,81 +1,22 @@
-@toolbarHeight: 40px;
-@headerHeight: 60px;
-
 #coll-doc-container {
   height: 100%;
   width: 1000px;
   margin: 0 auto;
   overflow: hidden;
 
-  #doc-title {
-    margin: calc(@toolbarHeight + 12px) 0 12px;
-    font-size: 36px;
-    font-weight: 700;
-    padding: 0;
-    background: transparent;
+  .title-input {
+    font-weight: 600;
+    font-size: 32px;
     line-height: 1;
+    padding: 2px;
+    background: transparent;
     border: none;
+    margin-top: 20px;
   }
 
-  #toolbar {
-    width: 1000px;
-    position: fixed;
-    padding: 8px 0;
-    height: @toolbarHeight;
-    top: @headerHeight;
-    background-color: rgb(var(--gray-1));
-    z-index: 10;
-    border: none;
-    border-bottom: 1px solid rgb(var(--gray-3));
-
-    .ql-size {
-      width: 100px;
-    }
-
+  .editor {
+    margin-top: 12px;
   }
-
-  #editor {
-    border: none;
-    overflow: visible;
-    font-size: 16px;
-
-    .ql-cursor {
-
-      .ql-cursor-flag {
-        z-index: 100;
-      }
-    }
-
-    .ql-editor {
-      padding: 0;
-
-      &.ql-blank::before {
-        left: 0;
-        right: 0;
-        font-style: normal;
-      }
-
-      code {
-        margin: 0 2px;
-        background-color: rgb(var(--gray-3));
-      }
-    }
-  }
-
-}
-
-.empty-doc {
-  height: 100%;
-  display: flex;
-  align-items: center;
-  flex-direction: column;
-  justify-content: center;
-}
-
-.cmd-icon {
-  width: 12px;
-  height: 12px;
-  margin-right: 4px;
 }
 
 .loading-bar {
