@@ -16,10 +16,6 @@ const plugin: EggPlugin = {
     enable: true,
     package: "egg-cors",
   },
-  io: {
-    enable: true,
-    package: "egg-socket.io",
-  },
   jwt: {
     enable: true,
     package: "egg-jwt",

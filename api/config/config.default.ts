@@ -57,21 +57,6 @@ export default (appInfo: EggAppInfo) => {
         );
       },
     },
-    io: {
-      init: {
-        pingInterval: 1000,
-        cors: {
-          credentials: true,
-          origin: FE_ORIGIN,
-        },
-      },
-      namespace: {
-        "/io/doc": {
-          connectionMiddleware: ["auth"],
-          packetMiddleware: [],
-        },
-      },
-    },
     sharedb: {
       port: 8080,
       options: {

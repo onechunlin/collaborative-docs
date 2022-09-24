@@ -16,3 +16,7 @@
 body {
   background-color: rgb(var(--gray-1));
 }
+
+a *[data-slate-string] {
+  color: rgb(var(--arcoblue-6));
+}
