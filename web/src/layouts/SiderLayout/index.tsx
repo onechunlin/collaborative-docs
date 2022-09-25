@@ -1,5 +1,5 @@
 import { Layout, Menu } from '@arco-design/web-react';
-import { IconHome, IconStar } from '@arco-design/web-react/icon';
+import { IconHome } from '@arco-design/web-react/icon';
 import { PropsWithChildren } from 'react';
 import { useHistory } from 'react-router-dom';
 import './index.less';
@@ -16,33 +16,32 @@ export default function SiderLayout(props: PropsWithChildren<any>) {
   };
 
   return (
-    <Layout className="sider-layout">
-      <Sider className="sider">
-        <div className="logo-name-container">
+    <Layout className='sider-layout'>
+      <Sider className='sider'>
+        <div className='logo-name-container'>
           <img
-            className="logo"
+            className='logo'
             src={require('@/assets/logo.png')}
-            alt="logo"
+            alt='logo'
             width={36}
           />
-          <span className="name">Small Docs</span>
+          <span className='name'>Small Docs</span>
         </div>
         <Menu
-          className="menu-list"
+          className='menu-list'
           defaultSelectedKeys={['/home']}
-          onClickMenuItem={handleMenuClick}
-        >
-          <MenuItem key="/home" className="menu-item">
+          onClickMenuItem={handleMenuClick}>
+          <MenuItem key='/home' className='menu-item'>
             <IconHome />
             主页
           </MenuItem>
-          <MenuItem key="/home/fav" className="menu-item">
+          {/* <MenuItem key="/home/fav" className="menu-item">
             <IconStar />
             收藏
-          </MenuItem>
+          </MenuItem> */}
         </Menu>
       </Sider>
-      <Content className="content">{children}</Content>
+      <Content className='content'>{children}</Content>
     </Layout>
   );
 }

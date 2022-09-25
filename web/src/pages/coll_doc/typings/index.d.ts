@@ -22,7 +22,12 @@ export type LinkElement = {
 
 export type HeadingElement = {
   type: 'heading';
-  level: number;
+  level: 1 | 2 | 3 | 4 | 5;
+  children: CustomText[];
+};
+
+export type DividerElement = {
+  type: 'divider';
   children: CustomText[];
 };
 
@@ -50,7 +55,8 @@ export type CustomElement =
   | ParagraphElement
   | CodeElement
   | HeadingElement
-  | LinkElement;
+  | LinkElement
+  | DividerElement;
 
 export type CustomText = FormattedText;
 

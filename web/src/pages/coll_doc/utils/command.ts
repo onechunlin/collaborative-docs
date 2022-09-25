@@ -235,6 +235,23 @@ const ActionFunction = {
     const linkPath = getNodePathWithElementValue(editor, ele);
     linkPath && Transforms.setNodes(editor, { url }, { at: linkPath });
   },
+
+  // 添加链接
+  addLink(editor: Editor, url: string) {
+    CustomEditor.insertNode(editor, {
+      type: 'link',
+      url,
+      children: [{ text: url }],
+    });
+  },
+
+  // 添加分割线
+  addDivider(editor: Editor) {
+    CustomEditor.insertNode(editor, {
+      type: 'divider',
+      children: [{ text: '' }],
+    });
+  },
 };
 
 export const CustomEditor = {

@@ -10,24 +10,26 @@ export default function BasicLayout(props: any) {
 
   const showAvatar = !['/login', '/register', '/'].includes(location.pathname);
   return (
-    <Layout className="basic-layout">
-      <Header className="header">
-        <div className="logo-name-container" onClick={() => history.push('/')}>
+    <Layout className='basic-layout'>
+      <Header className='header'>
+        <div
+          className='logo-name-container'
+          onClick={() => history.push('/home')}>
           <img
-            className="logo"
+            className='logo'
             src={require('@/assets/logo.png')}
-            alt="logo"
+            alt='logo'
             width={36}
           />
-          <span className="name">Small Docs</span>
+          <span className='name'>Small Docs</span>
         </div>
         {showAvatar && (
-          <Avatar className="avatar" size={36}>
-            <img src={window.userInfo?.avatar} alt="avatar" />
+          <Avatar className='avatar' size={36}>
+            <img src={window.userInfo?.avatar} alt='avatar' />
           </Avatar>
         )}
       </Header>
-      <Content className="content">{children}</Content>
+      <Content className='content'>{children}</Content>
     </Layout>
   );
 }

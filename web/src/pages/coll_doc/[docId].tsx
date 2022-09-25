@@ -17,10 +17,11 @@ import HoveringToolbar from './components/HoveringToolbar';
 import { WebSocketPluginOptions } from './plugins/withWebSocket';
 import withIOCollaboration from './plugins/withIOCollaboration';
 import { Input, Spin } from '@arco-design/web-react';
-import withInline from './plugins/withInline';
-import './index.less';
 import { useRequest } from 'ahooks';
 import { collDocInfoDetail, updateTitle } from '@/services/collDoc';
+import Divider from './components/Elements/Divider';
+
+import './index.less';
 
 const defaultValue: Descendant[] = [
   {
@@ -40,7 +41,7 @@ export default function CollaborativeDoc() {
   const [title, setTitle] = useState<string>();
 
   const editor = useMemo(() => {
-    const slateEditor = withInline(withReact(withHistory(createEditor())));
+    const slateEditor = withReact(withHistory(createEditor()));
 
     const host =
       process.env.NODE_ENV === 'production'
@@ -97,6 +98,8 @@ export default function CollaborativeDoc() {
     switch (element.type) {
       case 'link':
         return <Link {...props} />;
+      case 'divider':
+        return <Divider {...props} />;
       case 'paragraph':
         return <Paragraph {...props} />;
       default:

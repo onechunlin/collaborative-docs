@@ -15,10 +15,8 @@ import {
   Doc,
   removeOp,
   type,
-  moveOp,
 } from 'ot-json1';
 import { get } from 'lodash';
-import { CustomEditor } from './command';
 
 export const getJsonPathFromNode = (
   path: SlatePath,
