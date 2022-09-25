@@ -7,8 +7,11 @@ export const withOTJson1 = (editor: Editor) => {
 
   e.apply = (op: Operation) => {
     apply(op);
+    console.log(
+      '🚀 ~ file: withOtJson1.ts ~ line 7 ~ withOTJson1 ~ editor',
+      editor,
+    );
 
-    console.log('current time is ', Date());
     console.log('🚀 ~ file: withOtJson1.ts ~ line 12 ~ withOTJson1 ~ op', op);
 
     console.log(

@@ -15,7 +15,7 @@ const toolbarGap = 4;
 export interface ActionProps {
   icon: string;
   onClick: () => void;
-  active: boolean;
+  active?: boolean;
   tips?: ReactNode;
   hotKey?: ReactNode;
 }
@@ -198,6 +198,12 @@ const HoveringToolbar: FC = () => {
           active={CustomEditor.isParagraphTextAlignActive(editor, 'justify')}
           onClick={(): void => {
             CustomEditor.toggleParagraphTextAlign(editor, 'justify');
+          }}
+        />
+        <Action
+          icon='icon-fengexian'
+          onClick={(): void => {
+            CustomEditor.addDivider(editor);
           }}
         />
       </div>

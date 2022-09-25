@@ -10,6 +10,10 @@ export const handleKeyDown = (
     return;
   }
   switch (event.key) {
+    case 'Enter':
+      CustomEditor.removeMark(editor, 'bold');
+      break;
+
     case 'b':
       event.preventDefault();
       CustomEditor.toggleBoldMark(editor);
