@@ -20,6 +20,7 @@ import { Input, Spin } from '@arco-design/web-react';
 import { useRequest } from 'ahooks';
 import { collDocInfoDetail, updateTitle } from '@/services/collDoc';
 import Divider from './components/Elements/Divider';
+import useCursor from './hooks/useCursor';
 
 import './index.less';
 
@@ -62,6 +63,8 @@ export default function CollaborativeDoc() {
 
     return withIOCollaboration(slateEditor, options);
   }, []);
+
+  const decorate = useCursor(editor);
 
   // 拉取文档基本信息
   const { loading: basicInfoLoading } = useRequest(
@@ -108,9 +111,12 @@ export default function CollaborativeDoc() {
   }, []);
 
   // 决定如何渲染叶子节点（文本节点）
-  const renderLeaf = useCallback((props: RenderLeafProps) => {
-    return <Leaf {...props} />;
-  }, []);
+  const renderLeaf = useCallback(
+    (props: RenderLeafProps) => {
+      return <Leaf {...props} />;
+    },
+    [decorate],
+  );
 
   // 拉取内容和文档基本信息中
   if (contentLoading || basicInfoLoading) {
@@ -143,6 +149,7 @@ export default function CollaborativeDoc() {
             handleKeyDown(editor, event);
           }}
           placeholder='请输入正文'
+          decorate={decorate}
         />
       </Slate>
     </div>

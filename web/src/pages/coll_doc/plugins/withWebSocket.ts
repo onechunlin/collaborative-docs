@@ -25,11 +25,7 @@ export interface WebSocketPluginOptions {
   onError?: (msg: Error) => void;
 }
 
-export const withWebSocket = (
-  editor: Editor,
-  options: WebSocketPluginOptions,
-) => {
-  const e = editor as Editor & WebSocketEditor;
+export const withWebSocket = (e: Editor, options: WebSocketPluginOptions) => {
   const { onConnect, onError, url, docOptions } = options;
   const { collectionName, docId } = docOptions;
 

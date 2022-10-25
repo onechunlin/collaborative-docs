@@ -16,7 +16,7 @@ module.exports = app => {
 };
 
 function initServer(app) {
-    // 注册富文本类型
+    // 注册 json1 类型
     ShareDB.types.register(json1.type);
   // 创建 sharedb 实例
   const { url: dbUrl, options: dbOptions } = app.config.sharedb.options.db;

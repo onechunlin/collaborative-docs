@@ -2,6 +2,7 @@ import { BaseEditor, Descendant } from 'slate';
 import { ReactEditor } from 'slate-react';
 import { HistoryEditor } from 'slate-history';
 import { WebSocketEditor } from '../plugins/withWebSocket';
+import { CursorEditor } from '../plugins/withCursor';
 
 export type ParagraphElement = {
   type: 'paragraph';
@@ -51,6 +52,15 @@ export type FormattedText = {
   bgColor?: string;
 };
 
+export type DecoratedText = {
+  // 光标颜色
+  cursorColor?: string;
+  // 当前登录人名称
+  name?: string;
+  // 光标是否向前
+  isForward?: boolean;
+};
+
 export type CustomElement =
   | ParagraphElement
   | CodeElement
@@ -58,11 +68,15 @@ export type CustomElement =
   | LinkElement
   | DividerElement;
 
-export type CustomText = FormattedText;
+export type CustomText = FormattedText & DecoratedText;
 
 declare module 'slate' {
   interface CustomTypes {
-    Editor: BaseEditor & ReactEditor & HistoryEditor & WebSocketEditor;
+    Editor: BaseEditor &
+      ReactEditor &
+      HistoryEditor &
+      WebSocketEditor &
+      CursorEditor;
     Element: CustomElement;
     Text: CustomText;
   }

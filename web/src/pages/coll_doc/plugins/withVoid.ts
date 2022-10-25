@@ -1,12 +1,11 @@
 import { Editor } from 'slate';
 
-const withVoid = (editor: Editor): Editor => {
-  const { isVoid } = editor;
+const withVoid = (e: Editor): Editor => {
+  const { isVoid } = e;
 
-  editor.isVoid = (element) =>
-    ['divider'].includes(element.type) || isVoid(element);
+  e.isVoid = (element) => ['divider'].includes(element.type) || isVoid(element);
 
-  return editor;
+  return e;
 };
 
 export default withVoid;

@@ -1,16 +1,12 @@
 import { Editor, Operation } from 'slate';
 import { getJsonOpFromSlate } from '../utils/ot';
 
-export const withOTJson1 = (editor: Editor) => {
-  const e = editor as Editor;
+export const withOTJson1 = (e: Editor) => {
   const { apply } = e;
 
   e.apply = (op: Operation) => {
     apply(op);
-    console.log(
-      '🚀 ~ file: withOtJson1.ts ~ line 7 ~ withOTJson1 ~ editor',
-      editor,
-    );
+    console.log('🚀 ~ file: withOtJson1.ts ~ line 7 ~ withOTJson1 ~ e', e);
 
     console.log('🚀 ~ file: withOtJson1.ts ~ line 12 ~ withOTJson1 ~ op', op);
 
