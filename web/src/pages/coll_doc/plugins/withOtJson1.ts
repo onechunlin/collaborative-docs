@@ -6,7 +6,6 @@ export const withOTJson1 = (e: Editor) => {
 
   e.apply = (op: Operation) => {
     apply(op);
-    console.log('🚀 ~ file: withOtJson1.ts ~ line 7 ~ withOTJson1 ~ e', e);
 
     console.log('🚀 ~ file: withOtJson1.ts ~ line 12 ~ withOTJson1 ~ op', op);
 

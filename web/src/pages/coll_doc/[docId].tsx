@@ -23,7 +23,6 @@ import Divider from './components/Elements/Divider';
 import useCursor from './hooks/useCursor';
 
 import './index.less';
-
 const defaultValue: Descendant[] = [
   {
     type: 'paragraph',
