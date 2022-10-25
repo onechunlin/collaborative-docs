@@ -184,8 +184,19 @@ export const getJsonOpFromSlate = (e: Editor, op: Operation): JSONOp => {
       return [insertNodeOp, deleteNodeOp].reduce(type.compose, null) as JSONOp;
     }
 
-    case 'set_selection':
+    case 'set_selection': {
+      const { selection } = e;
+      const { anchor, focus } = selection || {};
+
+      anchor &&
+        focus &&
+        e.submitLocalPresence({
+          anchor,
+          focus,
+          name: window.userInfo.username,
+        });
       return null;
+    }
     default:
       return null;
   }

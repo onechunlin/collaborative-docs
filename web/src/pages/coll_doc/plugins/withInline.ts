@@ -2,23 +2,23 @@ import { Editor } from 'slate';
 import isUrl from 'validator/lib/isURL';
 import { CustomEditor } from '../utils/command';
 
-const withInline = (editor: Editor): Editor => {
-  const { insertData, isInline } = editor;
+const withInline = (e: Editor): Editor => {
+  const { insertData, isInline } = e;
 
-  editor.isInline = (element) =>
+  e.isInline = (element) =>
     ['link'].includes(element.type) || isInline(element);
 
-  editor.insertData = (data) => {
+  e.insertData = (data) => {
     const text = data.getData('text/plain');
 
     if (text && isUrl(text)) {
-      CustomEditor.addLink(editor, text);
+      CustomEditor.addLink(e, text);
     } else {
       insertData(data);
     }
   };
 
-  return editor;
+  return e;
 };
 
 export default withInline;

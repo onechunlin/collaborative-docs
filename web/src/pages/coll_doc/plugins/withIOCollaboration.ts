@@ -1,10 +1,11 @@
 import { Editor } from 'slate';
+import withCursor from './withCursor';
 import withInline from './withInline';
 import withOtJson1 from './withOtJson1';
 import withVoid from './withVoid';
 import withWebSocket, { WebSocketPluginOptions } from './withWebSocket';
 
-const withIOCollaboration = (editor: Editor, options: WebSocketPluginOptions) =>
-  withVoid(withInline(withWebSocket(withOtJson1(editor), options)));
+const withIOCollaboration = (e: Editor, options: WebSocketPluginOptions) =>
+  withVoid(withInline(withOtJson1(withCursor(withWebSocket(e, options)))));
 
 export default withIOCollaboration;
