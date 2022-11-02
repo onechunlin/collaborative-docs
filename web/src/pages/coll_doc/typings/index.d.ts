@@ -10,20 +10,21 @@ export type ParagraphElement = {
   children: Descendant[];
 };
 
-export type CodeElement = {
-  type: 'code';
-  children: Descendant[];
-};
+// 这两暂时没有实现，感兴趣可以当成练手实现这两个节点
+// export type CodeElement = {
+//   type: 'code';
+//   children: Descendant[];
+// };
+
+// export type HeadingElement = {
+//   type: 'heading';
+//   level: 1 | 2 | 3 | 4 | 5;
+//   children: CustomText[];
+// };
 
 export type LinkElement = {
   type: 'link';
   url: string;
-  children: CustomText[];
-};
-
-export type HeadingElement = {
-  type: 'heading';
-  level: 1 | 2 | 3 | 4 | 5;
   children: CustomText[];
 };
 
@@ -61,22 +62,19 @@ export type DecoratedText = {
   isForward?: boolean;
 };
 
-export type CustomElement =
-  | ParagraphElement
-  | CodeElement
-  | HeadingElement
-  | LinkElement
-  | DividerElement;
+export type CustomElement = ParagraphElement | LinkElement | DividerElement;
 
 export type CustomText = FormattedText & DecoratedText;
 
+export type CustomEditor = BaseEditor &
+  ReactEditor &
+  HistoryEditor &
+  WebSocketEditor &
+  CursorEditor;
+
 declare module 'slate' {
   interface CustomTypes {
-    Editor: BaseEditor &
-      ReactEditor &
-      HistoryEditor &
-      WebSocketEditor &
-      CursorEditor;
+    Editor: CustomEditor;
     Element: CustomElement;
     Text: CustomText;
   }

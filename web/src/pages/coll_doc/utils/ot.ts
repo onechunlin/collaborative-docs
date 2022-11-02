@@ -197,6 +197,7 @@ export const getJsonOpFromSlate = (e: Editor, op: Operation): JSONOp => {
         });
       return null;
     }
+
     default:
       return null;
   }
