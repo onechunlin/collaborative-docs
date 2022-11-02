@@ -36,6 +36,7 @@ export default (appInfo: EggAppInfo) => {
       },
     },
     jwt: {
+      // secret 级别的密码从安全性来说应该放在环境变量里，如果是线上项目可以注意一下
       secret: "jhduawsda23jd43",
     },
     cors: {

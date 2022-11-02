@@ -1,5 +1,6 @@
 import { Editor, Node, Path, Text } from 'slate';
 
+// 获取文本的描述，如下划线，删除线等
 export function getTextDecoration(leaf: Text): string {
   const textDecorationArray: string[] = [];
   if (leaf.underline) {
@@ -13,6 +14,7 @@ export function getTextDecoration(leaf: Text): string {
     : 'none';
 }
 
+// 通过节点的值来获取节点的 path（路径），此处通过判断对象的地址是否相等来决定是否匹配节点
 export function getNodePathWithElementValue(
   editor: Editor,
   elementValue: Node,

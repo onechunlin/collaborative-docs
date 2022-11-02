@@ -1,3 +1,6 @@
+/**
+ * 处理光标在线状态。
+ */
 import randomColor from 'randomcolor';
 import { useState, useCallback, useEffect } from 'react';
 import { Text, Range, NodeEntry, Selection, Editor, Point } from 'slate';
@@ -16,6 +19,7 @@ export interface Cursor extends CustomRange {
 type Decorate = (entry: NodeEntry) => Range[];
 
 const useCursor = (e: Editor): Decorate => {
+  // 使用一个 Map 来做文档在线状态的展示
   const [userCursorMap, setUserCursorMap] = useState<Map<string, Cursor>>(
     new Map(),
   );
@@ -35,6 +39,7 @@ const useCursor = (e: Editor): Decorate => {
     });
   }, []);
 
+  // 接收到在线信息变更时的处理函数
   function handlePresenceReceive(id: string, range: CustomRange): void {
     const currentUserCursor = userCursorMap.get(id);
     const { anchor, focus } = range;
@@ -55,12 +60,14 @@ const useCursor = (e: Editor): Decorate => {
           format: 'rgba',
           alpha: 1,
         }),
+        // 通过 anchor（鼠标落下时的位置） 和 focus（鼠标抬起的位置） 来判断用户的选择方向
         isForward: Point.isAfter(anchor, focus),
       });
     }
     setUserCursorMap(userCursorMap);
   }
 
+  // 文档的装饰信息，详情请查看 withReact 插件
   const decorate = useCallback(
     ([node, path]: NodeEntry): Cursor[] => {
       const ranges: Cursor[] = [];

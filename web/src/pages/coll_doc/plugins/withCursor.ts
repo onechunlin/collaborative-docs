@@ -1,3 +1,7 @@
+/**
+ * 获取鼠标信息的插件，需要和 withWebSocket 结合使用，详细方法请查看 withIOCollaboration
+ */
+
 import ObjectID from 'bson-objectid';
 import { debounce } from 'lodash';
 import { Presence } from 'sharedb/lib/client';
@@ -18,12 +22,15 @@ export const withCursor = (e: Editor) => {
   presence.subscribe(function (error) {
     if (error) throw error;
   });
-  // 创建当前用户的在场信息，当选取改变时上报事件
+  // 创建当前用户的在场信息，并绑定
   const presenceId = new ObjectID().toString();
   const localPresence = presence.create(presenceId);
 
+  // 当前 client 的在场 ID
   e.presenceId = presenceId;
+  // 当前文档在线实例
   e.presence = presence;
+  // 提交当前 client 在线状态信息的方法，在 ot.ts 中用到
   e.submitLocalPresence = debounce((value: CustomRange) => {
     localPresence.submit(value, function (error) {
       if (error) throw error;

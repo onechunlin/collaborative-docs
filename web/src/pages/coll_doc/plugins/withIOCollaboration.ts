@@ -1,3 +1,6 @@
+/**
+ * 插件的协同使用，注意插件间的依赖关系
+ */
 import { Editor } from 'slate';
 import withCursor from './withCursor';
 import withInline from './withInline';

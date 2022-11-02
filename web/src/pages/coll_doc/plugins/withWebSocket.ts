@@ -1,3 +1,8 @@
+/**
+ * 处理 websocket 连接的插件，通过 websocket 链接 sharedb 的服务器，
+ * 获取文档信息，进行 ot 操作
+ */
+
 import ReconnectingWebSocket from 'reconnecting-websocket';
 import { Doc } from 'sharedb';
 import sharedb, { Error } from 'sharedb/lib/client';
@@ -30,11 +35,12 @@ export const withWebSocket = (e: Editor, options: WebSocketPluginOptions) => {
   const { collectionName, docId } = docOptions;
 
   /**
-   * Connect to Socket.
+   * 连接 websocket 服务器
    */
 
   e.connect = () => {
     if (!e.doc) {
+      // 创建 websocket 连接，并注册文档信息（在线状态，内容等）
       sharedb.types.register(json1Type);
       const socket = new ReconnectingWebSocket(url);
       const connection = new sharedb.Connection(socket as Socket);
@@ -49,15 +55,20 @@ export const withWebSocket = (e: Editor, options: WebSocketPluginOptions) => {
       e.doc = doc;
     }
 
+    // 错误回调
     e.doc.on('error', (err) => {
       onError && onError(err);
     });
 
+    // 接收到 op 操作时的回调
     e.doc.on('op', (op, source) => {
+      // 如果是自己发出的则忽略
       if (source) {
         return;
       }
+      // 否则将该 op 操作作用到当前文档副本上
       e.children = type.apply(e.children, op) as Descendant[];
+      // 注意这里是为了视图更新，踩过坑，查了挺久发现需要手动调用
       e.onChange();
     });
 

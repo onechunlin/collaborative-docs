@@ -23,6 +23,7 @@ import Divider from './components/Elements/Divider';
 import useCursor from './hooks/useCursor';
 
 import './index.less';
+
 const defaultValue: Descendant[] = [
   {
     type: 'paragraph',
@@ -41,13 +42,17 @@ export default function CollaborativeDoc() {
   const [title, setTitle] = useState<string>();
 
   const editor = useMemo(() => {
-    const slateEditor = withReact(withHistory(createEditor()));
-
+    // websocket 的 host
     const host =
       process.env.NODE_ENV === 'production'
         ? `${window.location.host}/ws`
         : 'localhost:8080';
 
+    /**
+     * 连接 socket 服务器时的参数和回调，会根据传入的文档 ID
+     * 和文档 collection（集合，类似关系型数据库的表）名称拉
+     * 取文档信息，设置连接成功后的回调更新视图
+     */
     const options: WebSocketPluginOptions = {
       url: `ws://${host}?docId=${docId}`,
       docOptions: {
@@ -60,19 +65,22 @@ export default function CollaborativeDoc() {
       },
     };
 
-    return withIOCollaboration(slateEditor, options);
+    return withIOCollaboration(withReact(withHistory(createEditor())), options);
   }, []);
 
+  // 文档装饰信息，会体现在文档的数据上，但是不会改变底层数据（不会产生 op 操作）
   const decorate = useCursor(editor);
 
   // 拉取文档基本信息
   const { loading: basicInfoLoading } = useRequest(
     async () => {
+      // 文档基本信息和具体内容目前分表存储，文档标题暂时不做协同
       const res = await collDocInfoDetail(docId);
       setTitle(res.title);
       return res.title;
     },
     {
+      // 视图聚焦时刷新
       refreshOnWindowFocus: true,
     },
   );
@@ -94,7 +102,7 @@ export default function CollaborativeDoc() {
     updateTitleFn();
   }
 
-  // 决定如何渲染元素节点
+  // 决定如何渲染元素 Element 节点
   const renderElement = useCallback((props: RenderElementProps) => {
     const { element } = props;
     switch (element.type) {
