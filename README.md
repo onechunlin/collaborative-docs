@@ -1,4 +1,4 @@
-# mini-docs
+# coll-docs
 
 ## 写在前面
 
