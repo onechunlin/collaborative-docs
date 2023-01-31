@@ -1,4 +1,4 @@
-# coll-docs
+# collaborative-docs
 
 ## 写在前面
 
