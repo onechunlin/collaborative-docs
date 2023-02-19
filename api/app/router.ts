@@ -1,7 +1,7 @@
 import { Application } from "egg";
 
 export default (app: Application) => {
-  const { controller, router } = app as any;
+  const { controller, router } = app;
   router.prefix("/api");
 
   router.post("/user/login", controller.user.login);
@@ -20,4 +20,7 @@ export default (app: Application) => {
   router.post("/coll_doc/updateTitle", controller.collDoc.updateTitle);
   router.post("/coll_doc/detail", controller.collDoc.detail);
   router.post("/coll_doc/search", controller.collDoc.search);
+
+  // 文件处理
+  router.all("/codocs_file/upload", controller.file.upload)
 };
