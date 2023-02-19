@@ -16,6 +16,7 @@ export default (appInfo: EggAppInfo) => {
     REDIS_PORT = 6379,
     REDIS_PASSWORD = "redis_password",
     MONGO_URL = "mongodb://root:coll_doc_is_funny@127.0.0.1:27017?retryWrites=true&w=majority",
+    OSS_ACCESS_SECRET = '',
   } = process.env;
 
   // add your special config in here
@@ -69,6 +70,10 @@ export default (appInfo: EggAppInfo) => {
         },
       },
     },
+    oss: {
+      AccessKey: "LTAI5t93sYzZcH7WRyD1jY3J",
+      AccessSecret: OSS_ACCESS_SECRET,
+    }
   };
 
   // the return config will combines to EggAppConfig

@@ -17,3 +17,6 @@ config/**/*.js
 app/**/*.map
 test/**/*.map
 config/**/*.map
+
+# 本地dev开发配置不提交
+config/config.dev*

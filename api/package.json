@@ -11,6 +11,7 @@
     "start": "egg-scripts start --sticky --title=egg-server-server",
     "stop": "egg-scripts stop --title=egg-server-server",
     "dev": "docker-compose up -d && egg-bin dev --sticky",
+    "dev2": "EGG_SERVER_ENV=dev2 egg-bin dev --sticky",
     "debug": "egg-bin debug",
     "test-local": "egg-bin test",
     "test": "npm run lint -- --fix && npm run test-local",
@@ -23,6 +24,7 @@
   },
   "dependencies": {
     "@teamwork/websocket-json-stream": "^2.0.0",
+    "ali-oss": "6.17.1",
     "egg": "^2.6.1",
     "egg-cors": "^2.2.3",
     "egg-jwt": "^3.1.7",
@@ -40,6 +42,7 @@
     "ws": "^8.8.1"
   },
   "devDependencies": {
+    "@types/ali-oss": "^6.16.7",
     "@types/mocha": "^2.2.40",
     "@types/node": "^7.0.12",
     "@types/sharedb": "^3.0.0",
