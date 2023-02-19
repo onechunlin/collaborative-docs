@@ -1,4 +1,4 @@
-import OSS = require("ali-oss");
+import * as OSS from "ali-oss";
 import { Application } from "egg";
 
 let client: null | OSS = null;

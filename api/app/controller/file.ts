@@ -1,6 +1,6 @@
 import { Controller, Context } from "egg";
-import path =  require("path");
 import { nanoid } from 'nanoid';
+import { extname } from 'path';
 
 export default class FileController extends Controller {
   /**
@@ -9,7 +9,7 @@ export default class FileController extends Controller {
   async upload(ctx: Context) {
     const stream = await this.ctx.getFileStream();
     const fileId = nanoid();
-    const filename = fileId + path.extname(stream.filename).toLowerCase();
+    const filename = fileId + extname(stream.filename).toLowerCase();
     ctx.app.logger.info("[file controller] upload filename = %s", filename);
     const res = await ctx.service.file.upload(filename, stream);
     if(res){
