@@ -37,7 +37,7 @@
 ## 环境准备
 
 1. 首先得本地安装 Docker Desktop，安装请参考 [Docker 官网](https://docs.docker.com/compose/gettingstarted/)
-2. Node
+2. v12 <= Node <= v16
 3. npm or yarn
 
 ## 项目启动

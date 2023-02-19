@@ -12,10 +12,10 @@ export default (appInfo: EggAppInfo) => {
   config.middleware = ["auth", "errorHandler"];
 
   const {
-    REDIS_HOST = "127.0.0.1",
-    REDIS_PORT = 6379,
-    REDIS_PASSWORD = "redis_password",
-    MONGO_URL = "mongodb://root:coll_doc_is_funny@127.0.0.1:27017?retryWrites=true&w=majority",
+    // REDIS_HOST = "127.0.0.1",
+    // REDIS_PORT = 6379,
+    // REDIS_PASSWORD = "redis_password",
+    MONGO_URL,
     OSS_ACCESS_SECRET = '',
   } = process.env;
 
@@ -28,14 +28,14 @@ export default (appInfo: EggAppInfo) => {
         plugins: [],
       },
     },
-    redis: {
-      client: {
-        port: REDIS_PORT,
-        host: REDIS_HOST,
-        password: REDIS_PASSWORD,
-        db: 0,
-      },
-    },
+    // redis: {
+    //   client: {
+    //     port: REDIS_PORT,
+    //     host: REDIS_HOST,
+    //     password: REDIS_PASSWORD,
+    //     db: 0,
+    //   },
+    // },
     jwt: {
       // secret 级别的密码从安全性来说应该放在环境变量里，如果是线上项目可以注意一下
       secret: "jhduawsda23jd43",
