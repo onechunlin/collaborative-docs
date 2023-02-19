@@ -1,13 +1,14 @@
 import { Controller, Context } from "egg";
 import path =  require("path");
-import { v4 as uuid } from 'uuid';
+import { nanoid } from 'nanoid';
+
 export default class FileController extends Controller {
   /**
    * 文件上传
    */
   async upload(ctx: Context) {
     const stream = await this.ctx.getFileStream();
-    const fileId = uuid();
+    const fileId = nanoid();
     const filename = fileId + path.extname(stream.filename).toLowerCase();
     ctx.app.logger.info("[file controller] upload filename = %s", filename);
     const res = await ctx.service.file.upload(filename, stream);
@@ -15,7 +16,7 @@ export default class FileController extends Controller {
       ctx.body = {
         status: 0,
         msg: "",
-       data: res,
+        data: res,
        };
     } else {
       ctx.body = {
