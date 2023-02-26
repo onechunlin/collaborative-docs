@@ -38,7 +38,14 @@
 
 1. 首先得本地安装 Docker Desktop，安装请参考 [Docker 官网](https://docs.docker.com/compose/gettingstarted/)
 2. v12 <= Node <= v16
-3. npm or yarn
+3. npm or yarn（推荐 yarn）
+
+## 工程目录
+
+- **packages/api:** API 目录，登录、注册、文档列表等接口
+- **packages/os-server:** 本地的简易对象存储服务器，用于存储图片、视频等数据
+- **packages/share-server:** 基于 ShareDB 的 WebSocket 服务器，用于 OT 的流程控制、协同管理等
+- **packages/web:** 前端工程，登录、注册、文档编辑等页面。
 
 ## 项目启动
 
@@ -54,6 +61,14 @@ Share DB 服务器启动
 
 ```bash
 cd packages/share-server
+yarn
+yarn dev
+```
+
+对象存储服务器启动
+
+```bash
+cd packages/os-server
 yarn
 yarn dev
 ```
