@@ -1,5 +1,5 @@
 #!/bin/bash
-cd ../
+cd ../packages/api
 # 安装 yarn 
 npm install -g yarn
 # 创建 output 目录

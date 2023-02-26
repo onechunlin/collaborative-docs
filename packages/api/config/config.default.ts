@@ -1,5 +1,8 @@
 import { EggAppConfig, EggAppInfo, PowerPartial } from "egg";
 import { FE_ORIGIN } from "../app/constants";
+// 加载 .env 环境变量
+import { config } from "dotenv";
+config();
 
 export default (appInfo: EggAppInfo) => {
   const config = {} as PowerPartial<EggAppConfig>;
@@ -16,7 +19,7 @@ export default (appInfo: EggAppInfo) => {
     // REDIS_PORT = 6379,
     // REDIS_PASSWORD = "redis_password",
     MONGO_URL,
-    OSS_ACCESS_SECRET = '',
+    OSS_ACCESS_SECRET = "",
   } = process.env;
 
   // add your special config in here
@@ -73,7 +76,7 @@ export default (appInfo: EggAppInfo) => {
     oss: {
       AccessKey: "LTAI5t93sYzZcH7WRyD1jY3J",
       AccessSecret: OSS_ACCESS_SECRET,
-    }
+    },
   };
 
   // the return config will combines to EggAppConfig

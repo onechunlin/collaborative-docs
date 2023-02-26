@@ -45,6 +45,15 @@
 API 启动
 
 ```bash
+cd packages/api
+yarn
+yarn dev
+```
+
+Share DB 服务器启动
+
+```bash
+cd packages/share-server
 yarn
 yarn dev
 ```
@@ -52,6 +61,7 @@ yarn dev
 前端启动
 
 ```bash
+cd packages/web
 yarn
 yarn dev
 ```
