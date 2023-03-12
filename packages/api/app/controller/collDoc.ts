@@ -1,6 +1,5 @@
 import { Controller, Context } from "egg";
 import { CollDoc } from "../../typings/app/controller/collDoc";
-import { sleep } from "../utils";
 
 interface UpdateTitleReq {
   id: string;
@@ -23,9 +22,6 @@ export default class DocController extends Controller {
         ...restParams,
         creator: username,
       });
-
-      // 先睡一秒，确保文档快照创建成功
-      await sleep(1000);
 
       ctx.body = {
         status: 0,

@@ -1,7 +1,7 @@
 import { Controller, Context } from "egg";
 import { pick } from "lodash";
 import { TUserInfo } from "../../typings/app/controller/user";
-import { DEFAULT_AVATAR } from "../constants";
+import { DEFAULT_AVATAR, NO_NEED_LOGIN_PATH } from "../constants";
 
 export default class UserController extends Controller {
   /**
@@ -15,7 +15,11 @@ export default class UserController extends Controller {
       ctx.body = `window.userInfo = ${JSON.stringify(userInfo)}`;
       return;
     }
-    ctx.body = "";
+    const { referer } = ctx.request.header;
+    const noNeedLogin = NO_NEED_LOGIN_PATH.find((path) =>
+      (referer as string).match(path)
+    );
+    ctx.body = noNeedLogin ? "" : 'location.href="/login"';
   }
 
   /**
@@ -37,10 +41,9 @@ export default class UserController extends Controller {
       if (password === rightPassword) {
         const userInfo = pick(res, "username", "avatar");
         // 生成签名
-        const token = (this.app as any).jwt.sign(
-          userInfo,
-          this.app.config.jwt.secret
-        );
+        const token = this.app.jwt.sign(userInfo, this.app.config.jwt.secret, {
+          expiresIn: "7d",
+        });
         ctx.cookies.set("token", token);
         ctx.body = {
           status: 0,
