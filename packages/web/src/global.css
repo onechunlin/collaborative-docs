@@ -14,7 +14,7 @@
 }
 
 body {
-  background-color: rgb(var(--gray-1));
+  background-image: linear-gradient(to top, #ffffff, #ece9e6);
 }
 
 a *[data-slate-string] {

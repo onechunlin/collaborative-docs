@@ -15,10 +15,14 @@ export default function SiderLayout(props: PropsWithChildren<any>) {
     history.push(key);
   };
 
+  const jumpHome = () => {
+    history.push('/');
+  };
+
   return (
     <Layout className='sider-layout'>
       <Sider className='sider'>
-        <div className='logo-name-container'>
+        <div className='logo-name-container' onClick={jumpHome}>
           <img
             className='logo'
             src={require('@/assets/logo.png')}

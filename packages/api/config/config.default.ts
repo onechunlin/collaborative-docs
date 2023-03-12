@@ -62,17 +62,6 @@ export default (appInfo: EggAppInfo) => {
         );
       },
     },
-    sharedb: {
-      port: 8080,
-      options: {
-        presence: true,
-        db: {
-          url: MONGO_URL,
-          options: {},
-          collection: "collDoc",
-        },
-      },
-    },
     oss: {
       AccessKey: "LTAI5t93sYzZcH7WRyD1jY3J",
       AccessSecret: OSS_ACCESS_SECRET,

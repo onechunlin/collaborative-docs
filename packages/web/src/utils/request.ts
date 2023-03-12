@@ -26,7 +26,7 @@ export function request(config: AxiosRequestConfig): Promise<any> {
       ...headers,
       'x-csrf-token': getCookie('csrfToken'),
     },
-    withCredentials: true
+    withCredentials: true,
   })
     .then((res) => res.data)
     .then((res) => {
