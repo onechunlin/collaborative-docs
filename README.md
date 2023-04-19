@@ -10,7 +10,7 @@
 
 ## 技术简介
 
-> 详细技术方案可以[看这里](https://www.yuque.com/u29154913/ilyggm/he3omk)，还没写完，后续慢慢补充
+> 详细技术方案可以[看这里](https://wbkolpiohm.feishu.cn/docx/G5UPd97lTo4BP5xqrUjcy93bnNf)，目前主要写了方案选型部分，后续慢慢补充
 
 - 协同算法：在主流的 OT 和 CRDT 之间纠结了很久最终选择了 **OT** 实现。目前成熟的 OT 开源方案有 ShareDB，成熟的 CRDT 的方案有 Yjs，两者各有优劣（对协同编辑不了解的可以看看[这篇文章](https://juejin.cn/post/7030327005665034247)，作者讲的很不错）。
 - 冲突解决：使用 ottypes-json1 来解决冲突问题
