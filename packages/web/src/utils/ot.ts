@@ -1,3 +1,14 @@
+import { get } from 'lodash';
+import {
+  Doc,
+  JSONOp,
+  Path,
+  editOp,
+  insertOp,
+  removeOp,
+  replaceOp,
+  type,
+} from 'ot-json1';
 import {
   Editor,
   Element,
@@ -6,17 +17,6 @@ import {
   Path as SlatePath,
   Text,
 } from 'slate';
-import {
-  editOp,
-  insertOp,
-  Path,
-  JSONOp,
-  replaceOp,
-  Doc,
-  removeOp,
-  type,
-} from 'ot-json1';
-import { get } from 'lodash';
 
 export const getJsonPathFromNode = (
   path: SlatePath,
@@ -188,13 +188,13 @@ export const getJsonOpFromSlate = (e: Editor, op: Operation): JSONOp => {
       const { selection } = e;
       const { anchor, focus } = selection || {};
 
-      anchor &&
-        focus &&
-        e.submitLocalPresence({
-          anchor,
-          focus,
-          name: window.userInfo.username,
-        });
+      // anchor &&
+      //   focus &&
+      //   e.submitLocalPresence?.({
+      //     anchor,
+      //     focus,
+      //     name: '写死的名字',
+      //   });
       return null;
     }
 
