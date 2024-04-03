@@ -1,5 +1,5 @@
 import axios, { AxiosRequestConfig } from 'axios';
-import { TApiResponse } from '@/typings';
+import { ApiResponse } from '@/typings';
 /**
  * 封装获取 cookie 的方法
  */
@@ -18,22 +18,11 @@ export function getCookie(name: string): string {
 /**
  * 统一的请求函数
  */
-export function request(config: AxiosRequestConfig): Promise<any> {
-  const { headers, ...rest } = config;
-  return axios({
-    ...rest,
-    headers: {
-      ...headers,
-      'x-csrf-token': getCookie('csrfToken'),
-    },
-    withCredentials: true,
-  })
-    .then((res) => res.data)
-    .then((res) => {
-      const { status, msg, data } = res as TApiResponse<any>;
-      if (status !== 0) {
-        throw Error(msg);
-      }
-      return data;
-    });
+export async function request<T = any>(config: AxiosRequestConfig): Promise<T> {
+  const res = await axios(config);
+  const { status, msg, data } = res.data as ApiResponse<T>;
+  if (status !== 0) {
+    throw new Error(msg);
+  }
+  return data;
 }

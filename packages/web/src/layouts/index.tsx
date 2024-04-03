@@ -1,17 +1,18 @@
-import React from 'react';
-import { useLocation } from 'react-router-dom';
-import BasicLayout from './BasicLayout';
-import SiderLayout from './SiderLayout';
+import { Link, Outlet } from 'umi';
+import styles from './index.less';
 
-function Layout(props: React.PropsWithChildren<any>) {
-  const location = useLocation();
-  if (location.pathname.startsWith('/home')) {
-    return <SiderLayout>{props.children}</SiderLayout>;
-  } else if (location.pathname.startsWith('/md_edit')) {
-    return props.children;
-  }
-
-  return <BasicLayout>{props.children}</BasicLayout>;
+export default function Layout() {
+  return (
+    <div className={styles.navs}>
+      <ul>
+        <li>
+          <Link to="/">Home</Link>
+        </li>
+        <li>
+          <a href="https://github.com/umijs/umi">Github</a>
+        </li>
+      </ul>
+      <Outlet />
+    </div>
+  );
 }
-
-export default Layout;
