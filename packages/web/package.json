@@ -1,9 +1,9 @@
 {
-  "private": true,
+  "name": "web",
   "author": "王春林 <wangchunlin@xiaohongshu.com>",
   "scripts": {
-    "dev": "umi dev",
     "build": "umi build",
+    "dev": "umi dev",
     "postinstall": "umi setup",
     "setup": "umi setup",
     "start": "npm run dev"
