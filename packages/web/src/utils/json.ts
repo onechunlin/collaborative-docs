@@ -5,10 +5,10 @@
  * @param {*} [defaultObj={}] 转换失败时默认的对象
  * @return {*}  {(Record<string, unknown> | Record<string, unknown>[])}
  */
-export function safeParse(
+export function safeParse<T = any>(
   str: string,
-  defaultObj = {},
-): Record<string, unknown> | Record<string, unknown>[] {
+  defaultObj?: any,
+): T | typeof defaultObj {
   let obj = defaultObj;
   try {
     obj = JSON.parse(str);

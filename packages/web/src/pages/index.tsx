@@ -1,25 +1,11 @@
-import { Result, Button } from '@arco-design/web-react';
-import { IconFaceSmileFill } from '@arco-design/web-react/icon';
-import { useHistory } from 'react-router-dom';
+import { nanoid } from 'nanoid';
+import { history, useParams } from 'umi';
 
-export default function Login() {
-  const history = useHistory();
+export default function Index() {
+  const { docId } = useParams<{ docId: string }>();
 
-  return (
-    <Result
-      style={{
-        height: '100%',
-        display: 'flex',
-        justifyContent: 'center',
-        flexDirection: 'column',
-      }}
-      status={null}
-      icon={<IconFaceSmileFill style={{ color: 'rgb(var(--arcoblue-6))' }} />}
-      title='欢迎使用 Small Docs'
-      extra={
-        <Button type='primary' onClick={() => history.push('/login')}>
-          去登录
-        </Button>
-      }></Result>
-  );
+  if (!docId) {
+    history.push(`/${nanoid()}`);
+  }
+  return null;
 }

@@ -1,24 +1,16 @@
-import ShareDB from "sharedb";
+import ShareDB, { MemoryDB } from "sharedb";
 import WebSocket from "ws";
 import { type as json1Type } from "ot-json1";
 // @ts-ignore
 import WebSocketJSONStream from "@teamwork/websocket-json-stream";
-// @ts-ignore
-import sharedbMongo from "sharedb-mongo";
 import { parse as parseUrl } from "url";
 import qs from "qs";
 
 export interface ShareDbOptions {
   /** 是否启动在场功能，即当前连接用户 */
   presence: boolean;
-  /** 存储 DB 的相关配置 */
-  db: {
-    /** 连接的 url */
-    url: string;
-    /** 集合名称，即表名 */
-    collectionName: string;
-  };
 }
+
 export interface ShareServerOptions {
   /** 启动端口 */
   port: number;
@@ -38,10 +30,6 @@ const DEFAULT_OPTIONS: ShareServerOptions = {
   port: 8080,
   shareDbOptions: {
     presence: true,
-    db: {
-      url: process.env.MONGO_URL || "",
-      collectionName: "collDoc",
-    },
   },
 };
 
@@ -49,27 +37,13 @@ export function initServer(serverOptions?: ShareServerOptions) {
   const { port, shareDbOptions } = serverOptions || DEFAULT_OPTIONS;
   // 注册 json1 类型
   ShareDB.types.register(json1Type);
-  const {
-    db: { url, collectionName },
-    presence,
-  } = shareDbOptions;
-  const db = sharedbMongo(url);
+  const { presence } = shareDbOptions;
 
   // 创建 sharedb 实例
   const backend = new ShareDB({
     presence,
-    db,
+    db: new MemoryDB(),
   });
-
-  startServer({
-    backend,
-    port,
-    collectionName,
-  });
-}
-
-function startServer(config: ServerConfig) {
-  const { backend, port, collectionName } = config;
 
   const connection = backend.connect();
 
@@ -86,7 +60,7 @@ function startServer(config: ServerConfig) {
       return;
     }
     // 获取对应集合 ID 的文档
-    const doc = connection.get(collectionName, docId);
+    const doc = connection.get("collDoc", docId);
     // 获取 doc 的数据
     doc.fetch(function (err) {
       if (err) throw err;

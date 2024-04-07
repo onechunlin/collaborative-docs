@@ -1,0 +1,17 @@
+{
+  "name": "collaborative-docs",
+  "version": "1.0.0",
+  "description": "基于 Slate 和 ShareDb 实现的基于 OT 算法的协同文档",
+  "main": "index.js",
+  "private": true,
+  "scripts": {
+    "dev": "pnpm --filter web dev",
+    "preinstall": "npx only-allow pnpm",
+    "changeset": "changeset"
+  },
+  "author": "王春林",
+  "license": "ISC",
+  "devDependencies": {
+    "@changesets/cli": "^2.27.1"
+  }
+}

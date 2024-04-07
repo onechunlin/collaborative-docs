@@ -1,4 +1,4 @@
-import { CollDoc } from '@/typings/collDoc';
+import { CollDoc } from '@/typings';
 import { request } from '@/utils/request';
 
 /**
@@ -40,21 +40,6 @@ export async function updateTitle(
     data: {
       id: docId,
       title,
-    },
-  });
-}
-
-/**
- * 文档列表
- */
-export async function getCollDocList(
-  filter: Partial<CollDoc>,
-): Promise<CollDoc[]> {
-  return await request({
-    method: 'post',
-    url: '/api/coll_doc/search',
-    data: {
-      filter,
     },
   });
 }
