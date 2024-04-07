@@ -1,10 +1,38 @@
-.navs {
-  ul {
-    padding: 0;
-    list-style: none;
+.basic-layout {
+  height: 100vh;
+
+  .header {
+    position: fixed;
+    top: 0;
     display: flex;
+    z-index: 100;
+    width: 100%;
+    align-items: center;
+    height: 60px;
+    box-shadow: 0 0 12px rgba(0, 0, 0, 0.15);
+    justify-content: space-between;
+    padding: 0 20px;
+    background-color: #fff;
+
+    .logo-name-container {
+      display: flex;
+      align-items: center;
+
+      .logo {
+        margin-left: 28px;
+        border-radius: 8px;
+      }
+
+      .name {
+        font-size: 24px;
+        font-weight: bold;
+        margin-left: 16px;
+      }
+    }
   }
-  li {
-    margin-right: 1em;
+
+  .content {
+    margin-top: 60px;
+    background-color: #fff;
   }
 }

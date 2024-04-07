@@ -5,7 +5,7 @@
   "main": "index.js",
   "private": true,
   "scripts": {
-    "start-web": "pnpm --filter web start",
+    "dev": "pnpm --filter web dev",
     "preinstall": "npx only-allow pnpm",
     "changeset": "changeset"
   },

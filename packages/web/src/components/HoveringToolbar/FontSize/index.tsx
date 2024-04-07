@@ -4,6 +4,7 @@ import cx from 'classnames';
 import './index.less';
 import { CaretDownOutlined } from '@ant-design/icons';
 import { DEFAULT_FONT_SIZE } from '@/constants';
+import IconFont from '@/components/IconFont';
 
 const { Item: MenuItem } = Menu;
 
@@ -13,6 +14,7 @@ export interface FontSizeProps {
 }
 
 const fontSizeOptions: number[] = [12, 14, 16, 18, 22, 24, 28, 32, 40, 48];
+
 const FontSize: FC<FontSizeProps> = (props) => {
   const { value = DEFAULT_FONT_SIZE, onChange } = props;
   const [visible, setVisible] = useState<boolean>(false);
@@ -23,25 +25,30 @@ const FontSize: FC<FontSizeProps> = (props) => {
       onOpenChange={setVisible}
       trigger='click'
       getPopupContainer={(node) => node}
+      arrow={false}
       content={() => (
-        <Menu
+        <ul
           className='font-size-select-popup'
-          onClick={data => {
-            const { key } = data
-            onChange(Number(key));
-            setVisible(false);
-          }}>
+        >
           {fontSizeOptions.map((option) => (
-            <MenuItem key={String(option)}>{option}px</MenuItem>
+            <li
+              key={String(option)}
+              className='font-size-option'
+              onClick={() => {
+                onChange(Number(option));
+                setVisible(false);
+              }}>
+              {option}px
+            </li>
           ))}
-        </Menu>
+        </ul>
       )}>
       <div
         className={cx('font-size-select', {
           active: visible,
         })}>
         <span>{value}px</span>
-        <CaretDownOutlined />
+        <IconFont type='icon-caretdown' />
       </div>
     </Popover>
   );

@@ -1,18 +1,32 @@
-import { Link, Outlet } from 'umi';
-import styles from './index.less';
+import { Outlet } from 'umi';
+import { Layout, Avatar } from 'antd';
+import { useLocalUser } from '@/hooks/useLocalUser';
+import './index.less';
 
-export default function Layout() {
+const { Header, Content } = Layout;
+
+export default function BasicLayout() {
+  const user = useLocalUser()
+  if (!user) return null
+
   return (
-    <div className={styles.navs}>
-      <ul>
-        <li>
-          <Link to="/">Home</Link>
-        </li>
-        <li>
-          <a href="https://github.com/umijs/umi">Github</a>
-        </li>
-      </ul>
-      <Outlet />
-    </div>
+    <Layout className='basic-layout'>
+      <Header className='header'>
+        <div
+          className='logo-name-container'>
+          <img
+            className='logo'
+            src={require('@/assets/logo.jpg')}
+            alt='logo'
+            width={36}
+          />
+          <span className='name'>CollDoc</span>
+        </div>
+        <Avatar className='avatar' size={36}>
+          {user.name}
+        </Avatar>
+      </Header>
+      <Content className='content'><Outlet /></Content>
+    </Layout>
   );
 }

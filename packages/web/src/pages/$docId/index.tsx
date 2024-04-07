@@ -10,27 +10,21 @@ import {
   RenderLeafProps,
   Slate,
 } from 'slate-react';
-import { nanoid } from 'nanoid';
 import withCollaboration from '@/plugins/withCollaboration';
-import { history, useParams } from 'umi';
+import { useParams } from 'umi';
 import './index.less';
 
-const defaultValue: Descendant[] = [
-  {
-    type: 'paragraph',
-    children: [
-      {
-        text: '',
-      },
-    ],
-  },
-];
-
 export default function CollaborativeDoc() {
-  const [value, setValue] = useState<Descendant[]>(defaultValue);
+  const { docId } = useParams<{ docId: string }>();
+  const [value, setValue] = useState<Descendant[]>();
 
   const editor = useMemo(() => {
-    return withCollaboration(createEditor(), 'docId');
+    return withCollaboration(createEditor(), {
+      docId: docId!,
+      onConnect: (docData) => {
+        setValue(docData);
+      }
+    });
   }, []);
 
   // 文档装饰信息，会体现在文档的数据上，但是不会改变底层数据（不会产生 op 操作）
@@ -86,6 +80,10 @@ export default function CollaborativeDoc() {
   const renderLeaf = useCallback((props: RenderLeafProps) => {
     return <Leaf {...props} />;
   }, []);
+
+  if (!value) {
+    return null
+  }
 
   return (
     <div id="coll-doc-container">
