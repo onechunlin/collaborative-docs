@@ -2,7 +2,6 @@ import { FC, useState } from 'react';
 import { Menu, Popover } from 'antd';
 import cx from 'classnames';
 import './index.less';
-import { CaretDownOutlined } from '@ant-design/icons';
 import { DEFAULT_FONT_SIZE } from '@/constants';
 import IconFont from '@/components/IconFont';
 

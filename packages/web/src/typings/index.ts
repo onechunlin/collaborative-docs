@@ -2,7 +2,7 @@ export interface ApiResponse<T = any> {
   status: number;
   msg: string;
   data: T;
-};
+}
 
 /**
  * 文档结构

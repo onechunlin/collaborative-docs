@@ -1,5 +1,5 @@
-import axios, { AxiosRequestConfig } from 'axios';
 import { ApiResponse } from '@/typings';
+import axios, { AxiosRequestConfig } from 'axios';
 /**
  * 封装获取 cookie 的方法
  */

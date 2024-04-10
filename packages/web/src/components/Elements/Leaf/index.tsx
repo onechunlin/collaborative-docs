@@ -1,4 +1,4 @@
-import { DEFAULT_FONT_COLOR, DEFAULT_FONT_SIZE } from '@/constants';
+import { DEFAULT_FONT_COLOR } from '@/constants';
 import { getTextDecoration } from '@/utils/element';
 import { CSSProperties, FC } from 'react';
 import { RenderLeafProps } from 'slate-react';
@@ -12,7 +12,7 @@ import Caret from './Caret';
 const Leaf: FC<RenderLeafProps> = (props) => {
   const { attributes, children, leaf } = props;
   let textStyle: CSSProperties = {
-    fontSize: leaf.size || DEFAULT_FONT_SIZE,
+    fontSize: leaf.size,
     fontWeight: leaf.bold ? 'bold' : 'normal',
     fontStyle: leaf.italic ? 'italic' : 'normal',
     textDecoration: getTextDecoration(leaf),

@@ -13,6 +13,7 @@ import {
 import withCollaboration from '@/plugins/withCollaboration';
 import { useParams } from 'umi';
 import './index.less';
+// import Title from '@/components/Elements/Title';
 
 export default function CollaborativeDoc() {
   const { docId } = useParams<{ docId: string }>();
@@ -65,6 +66,8 @@ export default function CollaborativeDoc() {
   const renderElement = useCallback((props: RenderElementProps) => {
     const { element } = props;
     switch (element.type) {
+      // case 'title':
+      //   return <Title {...props} />;
       case 'link':
         return <Link {...props} />;
       case 'divider':

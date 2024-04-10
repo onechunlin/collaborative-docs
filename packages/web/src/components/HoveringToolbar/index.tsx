@@ -51,7 +51,7 @@ const Action: FC<ActionProps> = (props) => {
  */
 const HoveringToolbar: FC = () => {
   const editor = useSlate();
-  const ref = useRef<HTMLDivElement>();
+  const ref = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
     const el = ref.current;
@@ -80,12 +80,10 @@ const HoveringToolbar: FC = () => {
     const rect = domRange.getBoundingClientRect();
     // 更改工具栏位置
     el.style.opacity = '1';
-    el.style.top = `${
-      rect.top + window.pageYOffset - el.offsetHeight - toolbarGap
-    }px`;
-    el.style.left = `${
-      rect.left + window.pageXOffset - el.offsetWidth / 2 + rect.width / 2
-    }px`;
+    const top = Math.max(rect.top + window.scrollY - el.offsetHeight - toolbarGap, 12)
+    el.style.top = `${top}px`;
+    const left = Math.max(rect.left + window.scrollX - el.offsetWidth / 2 + rect.width / 2, 12)
+    el.style.left = `${left}px`;
   });
 
   return (
