@@ -69,7 +69,7 @@ export function initServer(serverOptions?: ShareServerOptions) {
         doc.create(
           [
             {
-              type: "paragraph",
+              type: "title",
               children: [
                 {
                   text: "",

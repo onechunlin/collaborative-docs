@@ -1,13 +1,13 @@
-import { BaseEditor, Descendant } from 'slate';
+import { BaseEditor, BaseText, Descendant } from 'slate';
 import { HistoryEditor } from 'slate-history';
 import { ReactEditor } from 'slate-react';
 import { CursorEditor } from '../plugins/withCursor';
 import { WebSocketEditor } from '../plugins/withWebSocket';
 
-// export type TitleElement = {
-//   type: 'title';
-//   children: BaseText[];
-// };
+export type TitleElement = {
+  type: 'title';
+  children: BaseText[];
+};
 
 export type ParagraphElement = {
   type: 'paragraph';
@@ -68,8 +68,10 @@ export type DecoratedText = {
 };
 
 export type CustomElement =
-  // | TitleElement
-  ParagraphElement | LinkElement | DividerElement;
+  | TitleElement
+  | ParagraphElement
+  | LinkElement
+  | DividerElement;
 
 export type CustomText = FormattedText & DecoratedText;
 
