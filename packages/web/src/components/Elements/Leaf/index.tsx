@@ -1,8 +1,9 @@
-import { DEFAULT_FONT_COLOR } from '@/constants';
 import { getTextDecoration } from '@/utils/element';
+import classNames from 'classnames';
 import { CSSProperties, FC } from 'react';
 import { RenderLeafProps } from 'slate-react';
 import Caret from './Caret';
+import './index.less';
 
 /**
  * 叶子节点，即文本节点
@@ -16,12 +17,12 @@ const Leaf: FC<RenderLeafProps> = (props) => {
     fontWeight: leaf.bold ? 'bold' : 'normal',
     fontStyle: leaf.italic ? 'italic' : 'normal',
     textDecoration: getTextDecoration(leaf),
-    color: leaf.color || DEFAULT_FONT_COLOR,
+    color: leaf.color,
     backgroundColor: leaf.bgColor,
   };
 
   const { textScript, cursorColor, name, isForward } = leaf;
-  console.log('🚀 ~ file: index.tsx ~ line 24 ~ isForward', isForward);
+
   switch (textScript) {
     case 'super':
       textStyle = {
@@ -53,7 +54,13 @@ const Leaf: FC<RenderLeafProps> = (props) => {
   }
 
   return (
-    <span {...attributes} style={textStyle}>
+    <span
+      {...attributes}
+      style={textStyle}
+      className={classNames({
+        'inline-code': leaf.code,
+      })}
+    >
       {children}
       {cursorColor && name && (
         <Caret color={cursorColor} name={name} isForward={!!isForward} />

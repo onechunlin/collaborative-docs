@@ -56,6 +56,8 @@ export type FormattedText = {
   color?: string;
   // 背景颜色
   bgColor?: string;
+  // 行内代码
+  code?: boolean;
 };
 
 export type DecoratedText = {
