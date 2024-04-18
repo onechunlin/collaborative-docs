@@ -10,23 +10,21 @@ export const handleKeyDown = (
   if (!event.metaKey) {
     return;
   }
+  event.preventDefault();
   switch (event.key) {
     case 'Enter':
       CustomEditor.removeMark(editor, 'bold');
       break;
 
     case 'b':
-      event.preventDefault();
       CustomEditor.toggleBoldMark(editor);
       break;
 
     case 'i':
-      event.preventDefault();
       CustomEditor.toggleItalicMark(editor);
       break;
 
     case 'u':
-      event.preventDefault();
       CustomEditor.toggleUnderlineMark(editor);
       break;
 

@@ -6,6 +6,7 @@ import { Descendant, Editor } from 'slate';
 import { withHistory } from 'slate-history';
 import { withReact } from 'slate-react';
 import withInline from './withInline';
+import { withLayout } from './withLayout';
 import withOtJson1 from './withOtJson1';
 import withVoid from './withVoid';
 import withWebSocket, { WebSocketPluginOptions } from './withWebSocket';
@@ -33,7 +34,9 @@ const withCollaboration = (e: Editor, options: CollaborativeDocOptions) => {
     },
   };
 
-  const baseEditor = withVoid(withInline(withReact(withHistory(e))));
+  const baseEditor = withLayout(
+    withVoid(withInline(withReact(withHistory(e)))),
+  );
   return withOtJson1(withWebSocket(baseEditor, socketOptions));
 };
 

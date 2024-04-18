@@ -1,4 +1,4 @@
-import { Editor, Transforms, Text, Element, Range, Node } from 'slate';
+import { Editor, Element, Text, Transforms } from 'slate';
 import { LinkElement, ParagraphElement } from '../typings/editor';
 import { getNodePathWithElementValue } from './element';
 
@@ -40,6 +40,16 @@ const JudgmentFunction = {
   isLineThroughMarkActive(editor: Editor): boolean {
     const [match] = Editor.nodes(editor, {
       match: (n) => !!(n as Text).lineThrough,
+      universal: true,
+    });
+
+    return !!match;
+  },
+
+  // 当前选择区域是否行内代码块
+  isInlineCodeMarkActive(editor: Editor): boolean {
+    const [match] = Editor.nodes(editor, {
+      match: (n) => !!(n as Text).code,
       universal: true,
     });
 
@@ -150,6 +160,16 @@ const ActionFunction = {
     Transforms.setNodes(
       editor,
       { textScript: isActive ? undefined : 'sub' },
+      { match: (n) => Text.isText(n), split: true },
+    );
+  },
+
+  // 切换行内代码块
+  toggleInlineCodeMark(editor: Editor): void {
+    const isActive = JudgmentFunction.isInlineCodeMarkActive(editor);
+    Transforms.setNodes(
+      editor,
+      { code: isActive ? undefined : true },
       { match: (n) => Text.isText(n), split: true },
     );
   },

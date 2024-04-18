@@ -1,13 +1,13 @@
 import CustomTooltip from '@/components/CustomTooltip';
-import { FC, ReactNode, useEffect, useRef } from 'react';
+import cx from 'classnames';
+import { CSSProperties, FC, ReactNode, useEffect, useRef } from 'react';
 import { Editor, Range } from 'slate';
 import { useSlate } from 'slate-react';
-import cx from 'classnames';
 import { CustomEditor } from '../../utils/command';
 import IconFont from '../IconFont';
 import Portal from '../Portal';
-import FontSize from './FontSize';
 import ColorSelect from './ColorSelect';
+import FontSize from './FontSize';
 import './index.less';
 
 const toolbarGap = 4;
@@ -18,6 +18,7 @@ export interface ActionProps {
   active?: boolean;
   tips?: ReactNode;
   hotKey?: ReactNode;
+  style?: CSSProperties;
 }
 /**
  * 具体操作按钮
@@ -25,19 +26,21 @@ export interface ActionProps {
  * @returns
  */
 const Action: FC<ActionProps> = (props) => {
-  const { icon, tips, active, hotKey, onClick } = props;
+  const { icon, tips, active, hotKey, style, onClick } = props;
   const showTooltip = tips || hotKey;
   const actionNode = (
     <span
       className={cx('action', {
         active,
       })}
-      onClick={onClick}>
+      onClick={onClick}
+      style={style}
+    >
       <IconFont type={icon} />
     </span>
   );
   return showTooltip ? (
-    <CustomTooltip tips={tips} hotKey={hotKey}>
+    <CustomTooltip title="sadasd" tips={tips} hotKey={hotKey}>
       {actionNode}
     </CustomTooltip>
   ) : (
@@ -51,7 +54,7 @@ const Action: FC<ActionProps> = (props) => {
  */
 const HoveringToolbar: FC = () => {
   const editor = useSlate();
-  const ref = useRef<HTMLDivElement>();
+  const ref = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
     const el = ref.current;
@@ -80,18 +83,22 @@ const HoveringToolbar: FC = () => {
     const rect = domRange.getBoundingClientRect();
     // 更改工具栏位置
     el.style.opacity = '1';
-    el.style.top = `${
-      rect.top + window.pageYOffset - el.offsetHeight - toolbarGap
-    }px`;
-    el.style.left = `${
-      rect.left + window.pageXOffset - el.offsetWidth / 2 + rect.width / 2
-    }px`;
+    const top = Math.max(
+      rect.top + window.scrollY - el.offsetHeight - toolbarGap,
+      12,
+    );
+    el.style.top = `${top}px`;
+    const left = Math.max(
+      rect.left + window.scrollX - el.offsetWidth / 2 + rect.width / 2,
+      12,
+    );
+    el.style.left = `${left}px`;
   });
 
   return (
     <Portal>
       <div
-        className='hovering-toolbar'
+        className="hovering-toolbar"
         ref={ref}
         // 防止点击工具栏时触发编辑器的失焦操作
         onMouseDown={(e) => {
@@ -99,7 +106,8 @@ const HoveringToolbar: FC = () => {
             return;
           }
           e.preventDefault();
-        }}>
+        }}
+      >
         <FontSize
           value={CustomEditor.getFontSize(editor)}
           onChange={(fontSize) => {
@@ -107,49 +115,59 @@ const HoveringToolbar: FC = () => {
           }}
         />
         <Action
-          icon='icon-01jiacu'
+          icon="icon-01jiacu"
           active={CustomEditor.isBoldMarkActive(editor)}
           onClick={(): void => {
             CustomEditor.toggleBoldMark(editor);
           }}
         />
         <Action
-          icon='icon-02xieti'
+          icon="icon-02xieti"
           active={CustomEditor.isItalicMarkActive(editor)}
           onClick={(): void => {
             CustomEditor.toggleItalicMark(editor);
           }}
         />
         <Action
-          icon='icon-03xiahuaxian'
+          icon="icon-03xiahuaxian"
           active={CustomEditor.isUnderlineMarkActive(editor)}
           onClick={(): void => {
             CustomEditor.toggleUnderlineMark(editor);
           }}
         />
         <Action
-          icon='icon-04shanchuxian'
+          icon="icon-04shanchuxian"
           active={CustomEditor.isLineThroughMarkActive(editor)}
           onClick={(): void => {
             CustomEditor.toggleLineThroughMark(editor);
           }}
         />
         <ColorSelect
-          cacheKey='font-color'
-          icon={<IconFont type='icon-24zitiyanse' />}
+          cacheKey="font-color"
+          icon={<IconFont type="icon-24zitiyanse" />}
           onChange={(color) => {
             CustomEditor.toggleFontColor(editor, color);
           }}
         />
         <ColorSelect
-          cacheKey='bg-color'
-          icon={<IconFont type='icon-19beijingyanse' />}
+          cacheKey="bg-color"
+          icon={<IconFont type="icon-19beijingyanse" />}
           onChange={(color) => {
             CustomEditor.toggleBgColor(editor, color);
           }}
         />
         <Action
-          icon='icon-07lianjie'
+          icon="icon-code"
+          active={CustomEditor.isInlineCodeMarkActive(editor)}
+          style={{
+            fontSize: 18,
+          }}
+          onClick={(): void => {
+            CustomEditor.toggleInlineCodeMark(editor);
+          }}
+        />
+        <Action
+          icon="icon-07lianjie"
           active={CustomEditor.isLinkActive(editor)}
           onClick={(): void => {
             const active = CustomEditor.isLinkActive(editor);
@@ -159,49 +177,49 @@ const HoveringToolbar: FC = () => {
           }}
         />
         <Action
-          icon='icon-06shangbiao'
+          icon="icon-06shangbiao"
           active={CustomEditor.isScriptMarkActive(editor, 'super')}
           onClick={(): void => {
             CustomEditor.toggleSuperScriptMark(editor);
           }}
         />
         <Action
-          icon='icon-05xiabiao'
+          icon="icon-05xiabiao"
           active={CustomEditor.isScriptMarkActive(editor, 'sub')}
           onClick={(): void => {
             CustomEditor.toggleSubScriptMark(editor);
           }}
         />
         <Action
-          icon='icon-09zuoduiqi'
+          icon="icon-09zuoduiqi"
           active={CustomEditor.isParagraphTextAlignActive(editor, 'left')}
           onClick={(): void => {
             CustomEditor.toggleParagraphTextAlign(editor, 'left');
           }}
         />
         <Action
-          icon='icon-11juzhongduiqi'
+          icon="icon-11juzhongduiqi"
           active={CustomEditor.isParagraphTextAlignActive(editor, 'center')}
           onClick={(): void => {
             CustomEditor.toggleParagraphTextAlign(editor, 'center');
           }}
         />
         <Action
-          icon='icon-10youduiqi'
+          icon="icon-10youduiqi"
           active={CustomEditor.isParagraphTextAlignActive(editor, 'right')}
           onClick={(): void => {
             CustomEditor.toggleParagraphTextAlign(editor, 'right');
           }}
         />
         <Action
-          icon='icon-12liangduanduiqi'
+          icon="icon-12liangduanduiqi"
           active={CustomEditor.isParagraphTextAlignActive(editor, 'justify')}
           onClick={(): void => {
             CustomEditor.toggleParagraphTextAlign(editor, 'justify');
           }}
         />
         <Action
-          icon='icon-fengexian'
+          icon="icon-fengexian"
           onClick={(): void => {
             CustomEditor.addDivider(editor);
           }}
