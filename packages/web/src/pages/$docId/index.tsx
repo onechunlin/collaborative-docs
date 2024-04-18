@@ -1,6 +1,8 @@
 import { DefaultElement, Leaf, Link, Paragraph } from '@/components/Elements';
 import Divider from '@/components/Elements/Divider';
+import Title from '@/components/Elements/Title';
 import HoveringToolbar from '@/components/HoveringToolbar';
+import withCollaboration from '@/plugins/withCollaboration';
 import { handleKeyDown } from '@/utils/handler';
 import { useCallback, useMemo, useState } from 'react';
 import { Descendant, createEditor } from 'slate';
@@ -10,10 +12,8 @@ import {
   RenderLeafProps,
   Slate,
 } from 'slate-react';
-import withCollaboration from '@/plugins/withCollaboration';
 import { useParams } from 'umi';
 import './index.less';
-import Title from '@/components/Elements/Title';
 
 export default function CollaborativeDoc() {
   const { docId } = useParams<{ docId: string }>();
@@ -24,7 +24,7 @@ export default function CollaborativeDoc() {
       docId: docId!,
       onConnect: (docData) => {
         setValue(docData);
-      }
+      },
     });
   }, []);
 
@@ -81,11 +81,11 @@ export default function CollaborativeDoc() {
 
   // 决定如何渲染叶子节点（文本节点）
   const renderLeaf = useCallback((props: RenderLeafProps) => {
-    return <Leaf {...props} />;
+    return <Leaf editor={editor} {...props} />;
   }, []);
 
   if (!value) {
-    return null
+    return null;
   }
 
   return (
@@ -100,7 +100,7 @@ export default function CollaborativeDoc() {
             handleKeyDown(editor, event);
           }}
           placeholder="请输入正文"
-        // decorate={decorate}
+          // decorate={decorate}
         />
       </Slate>
     </div>
